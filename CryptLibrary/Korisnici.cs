@@ -1,8 +1,12 @@
-﻿namespace CryptLibrary
+﻿using System;
+
+namespace CryptLibrary
 {
-    public class Korisnici
+    [Serializable]
+  public class Korisinici
     {
         public string Ime { get; set; }
         public string Password { get; set; }
     }
+
 }
