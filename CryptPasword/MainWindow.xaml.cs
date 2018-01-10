@@ -42,7 +42,14 @@ namespace CryptPasword
 
         private bool ProvjeriUJson(Korisinici korisnik)
         {
-            throw new System.NotImplementedException();
+            var upit = new UpitUJson(_korisnik.Ime);
+            var dobro = upit.VratiUpit();
+            if (dobro)
+            {
+                MessageBox.Show("Korisnik se nalazi u bazi");
+            }
+            
+            return false;
         }
 
 
