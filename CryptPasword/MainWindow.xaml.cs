@@ -1,20 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using CryptLibrary;
-using Newtonsoft.Json;
 
 namespace CryptPasword
 {
@@ -23,43 +8,57 @@ namespace CryptPasword
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Korisinici _korisnik;
+
         public MainWindow()
         {
             InitializeComponent();
+            _korisnik = new Korisinici();
         }
 
         private string VratiPassword()
         {
+            if (string.IsNullOrWhiteSpace(TxtPassword.Password)) MessageBox.Show("Niste ništa upisali");
             return TxtPassword.Password;
         }
 
         private string VratiIme()
         {
-            return TxtKorisnik.Text;
+            if (!string.IsNullOrWhiteSpace(TxtKorisnik.Text))return TxtKorisnik.Text;
+                MessageBox.Show("Niste ništa upisali");
+                return string.Empty;
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var proces = new EncDecrypt(VratiPassword());
-            var izlaz = proces.Encrypt();
-            LblIzlaz.Content= izlaz;
-            UpisiJson();
+            KriptirajPassword();
+            bool korisnikPostoji = ProvjeriUJson(_korisnik);
+            DodajUJson();
+            LblIzlaz.Content= _korisnik.Password;
+            //ProcessJson();
 
         }
 
-        private void UpisiJson()
+        private bool ProvjeriUJson(Korisinici korisnik)
         {
-            var korisnik = new Korisinici
-            {
-                Ime = VratiIme(),
-                Password = VratiPassword()
-            };
-            using (StreamWriter file = File.AppendText(@"C:\Users\Darko\Documents\CryptPasword\Korisnici.json"))
-                {
-                   JsonSerializer serializer = new JsonSerializer();
-                   serializer.Serialize(file, korisnik);
-                }
+            throw new System.NotImplementedException();
         }
+
+
+        private void KriptirajPassword()
+        {
+            var proces = new EncDecrypt(VratiPassword());
+            _korisnik.Password = proces.Encrypt();
+            _korisnik.Ime = VratiIme();
+        }
+
+        private void DodajUJson()
+        {
+            var dodajKorisnika = new CitajPisiJson(_korisnik);
+            dodajKorisnika.ProcessJson();
+        }
+
 
         private void BtnDecrypt_Click(object sender, RoutedEventArgs e)
         {
