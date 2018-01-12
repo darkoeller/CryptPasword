@@ -1,8 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Markup;
 using CryptLibrary;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace CryptPasword.UC
@@ -21,20 +27,35 @@ namespace CryptPasword.UC
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            PopuniMrezu(out JArray item);
-            KorisiniciDataGrid.ItemsSource = item;
+            //PopuniMrezu();
+            KorisiniciDataGrid.ItemsSource = PopuniMrezu();
         }
 
-        private static void PopuniMrezu(out JArray item)
+        private  List<Korisinici> PopuniMrezu()
         {
-            
+            var lista = new List<Korisinici>();
             var jsonObject = File.ReadAllText(@"Korisnici.json");
             var rss = JObject.Parse(jsonObject);
-            item = (JArray) rss["Korisnici"];
-            foreach (var arr in item)
+            var imena = from p in rss["Korisnici"]
+                select(string)p["Ime"];
+            var passwordi = from p in rss["Korisnici"]
+                select (string) p["Password"];
+
+            foreach(var ime in imena)
             {
-                var desifrator = new EncDecrypt(arr.ToString());
+                var desifrator = new EncDecrypt(ime);
+                var vraceno = desifrator.Encrypt();
+                _korisnik.Ime = vraceno;
+      
             }
+            foreach (var password in passwordi)
+            {
+                var sifra = new EncDecrypt(password);
+                var vracenasifra = sifra.Encrypt();
+                _korisnik.Password = vracenasifra;
+                 lista.Add(_korisnik);   
+            }
+            return lista;
         }
 
 
