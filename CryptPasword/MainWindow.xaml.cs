@@ -8,12 +8,12 @@ namespace CryptPasword
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Korisinici _korisnik;
+        private readonly Korisnici _korisnik;
 
         public MainWindow()
         {
             InitializeComponent();
-            _korisnik = new Korisinici();
+            _korisnik = new Korisnici();
         }
 
         private string VratiPassword()
@@ -36,11 +36,11 @@ namespace CryptPasword
             bool korisnikPostoji = ProvjeriUJson(_korisnik);
             DodajUJson();
             LblIzlaz.Content= _korisnik.Password;
-            //ProcessJson();
+            //DodajKorisnikaUJson();
 
         }
 
-        private bool ProvjeriUJson(Korisinici korisnik)
+        private bool ProvjeriUJson(Korisnici korisnik)
         {
             var upit = new UpitUJson(_korisnik.Ime);
             var dobro = upit.VratiUpit();
@@ -63,7 +63,7 @@ namespace CryptPasword
         private void DodajUJson()
         {
             var dodajKorisnika = new CitajPisiJson(_korisnik);
-            dodajKorisnika.ProcessJson();
+            dodajKorisnika.DodajKorisnikaUJson();
         }
 
 

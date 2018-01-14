@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="450" Loaded="UserControl_Loaded">
     <UserControl.Resources>
-        <CollectionViewSource x:Key="KorisiniciViewSource" d:DesignSource="{d:DesignInstance {x:Type cryptLibrary:Korisinici}, CreateList=True}"/>
+        <CollectionViewSource x:Key="KorisiniciViewSource" d:DesignSource="{d:DesignInstance {x:Type cryptLibrary:Korisnici}, CreateList=True}"/>
     </UserControl.Resources>
     <DockPanel LastChildFill="False">
         <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="16" Margin="0,20" FontFamily="Comic Sans MS">DODAJ ILI OBRIŠI KORISNIKA</TextBlock>

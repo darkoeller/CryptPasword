@@ -18,7 +18,7 @@ namespace CryptPasword.UC
     /// </summary>
     public partial class DodajObrisiKorisnika : UserControl
     {
-        private readonly Korisinici _korisnik = new Korisinici();
+        private  Korisnici _korisnik = new Korisnici();
 
         public DodajObrisiKorisnika()
         {
@@ -31,31 +31,27 @@ namespace CryptPasword.UC
             KorisiniciDataGrid.ItemsSource = PopuniMrezu();
         }
 
-        private  List<Korisinici> PopuniMrezu()
+        private static IEnumerable<Korisnici> PopuniMrezu()
         {
-            var lista = new List<Korisinici>();
             var jsonObject = File.ReadAllText(@"Korisnici.json");
             var rss = JObject.Parse(jsonObject);
             var imena = from p in rss["Korisnici"]
-                select(string)p["Ime"];
+                        select (string)p["Ime"];
             var passwordi = from p in rss["Korisnici"]
-                select (string) p["Password"];
+                            select (string)p["Password"];
 
-            foreach(var ime in imena)
+            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Encrypt()).ToList();
+            var paswordArray = passwordi.Select(password => new EncDecrypt(password)).Select(sifra => sifra.Encrypt()).ToList();
+
+            foreach (var ime in imenaArray)
             {
-                var desifrator = new EncDecrypt(ime);
-                var vraceno = desifrator.Encrypt();
-                _korisnik.Ime = vraceno;
-      
+                 foreach (var pass in paswordArray)
+                 {
+                    yield return (new Korisnici{Ime = ime, Password = pass});
+                     paswordArray.Remove(pass);
+                     break;
+                 }
             }
-            foreach (var password in passwordi)
-            {
-                var sifra = new EncDecrypt(password);
-                var vracenasifra = sifra.Encrypt();
-                _korisnik.Password = vracenasifra;
-                 lista.Add(_korisnik);   
-            }
-            return lista;
         }
 
 
@@ -83,14 +79,15 @@ namespace CryptPasword.UC
             _korisnik.Ime = ime;
             _korisnik.Password = pasword;
             var dodajKorisnika = new CitajPisiJson(_korisnik);
-            dodajKorisnika.ProcessJson();
+            dodajKorisnika.DodajKorisnikaUJson();
            
         }
 
         private string VratiPassword()
         {
-            if (!string.IsNullOrWhiteSpace(TxtPassword.Password)) MessageBox.Show("Niste ništa upisali");
-            return TxtPassword.Password;
+            if (!string.IsNullOrWhiteSpace(TxtPassword.Password))return TxtPassword.Password;
+                MessageBox.Show("Niste ništa upisali");
+                return string.Empty;
         }
 
         private string VratiIme()
@@ -100,5 +97,13 @@ namespace CryptPasword.UC
             return string.Empty;
 
         }
+
+        /*Dodati u json
+         * pročitaj fajl
+         * pročitaj textbox
+         * dodaj objekt
+         * kriptiraj sve 
+         * spremi u json
+         */
     }
 }

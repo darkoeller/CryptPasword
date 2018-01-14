@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace CryptLibrary
 {
     [Serializable]
-  public class Korisinici
+  public class Korisnici
     {
         [JsonProperty("Ime")]
         public string Ime { get; set; }
