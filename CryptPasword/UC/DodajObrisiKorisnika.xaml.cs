@@ -27,31 +27,33 @@ namespace CryptPasword.UC
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //PopuniMrezu();
-            KorisiniciDataGrid.ItemsSource = PopuniMrezu();
+            PopuniMrezu();
+            //KorisiniciDataGrid.ItemsSource = PopuniMrezu();
         }
 
-        private static IEnumerable<Korisnici> PopuniMrezu()
+        private void PopuniMrezu()
         {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");
+            var jsonObject = File.ReadAllText(@"Korisnici.json");            
             var rss = JObject.Parse(jsonObject);
             var imena = from p in rss["Korisnici"]
                         select (string)p["Ime"];
             var passwordi = from p in rss["Korisnici"]
                             select (string)p["Password"];
 
-            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Encrypt()).ToList();
-            var paswordArray = passwordi.Select(password => new EncDecrypt(password)).Select(sifra => sifra.Encrypt()).ToList();
+            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Decrypt()).ToList();
+            var paswordArray = passwordi.Select(password => new EncDecrypt(password)).Select(sifra => sifra.Decrypt()).ToList();
 
+            var listaKorisnika = new List<Korisnici>();
             foreach (var ime in imenaArray)
             {
                  foreach (var pass in paswordArray)
                  {
-                    yield return (new Korisnici{Ime = ime, Password = pass});
+                     listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass});
                      paswordArray.Remove(pass);
                      break;
                  }
             }
+            KorisiniciDataGrid.ItemsSource = listaKorisnika;
         }
 
 
@@ -63,9 +65,11 @@ namespace CryptPasword.UC
 
         private void BtnDodaj_Click(object sender, RoutedEventArgs e)
         {
-            var ime = KriptirajTekst(TxtIme.Text);
-            var pasword = KriptirajTekst(TxtPassword.Password);
-            DodajUJson(ime, pasword);
+            _korisnik.Ime = KriptirajTekst(VratiIme());
+            _korisnik.Password = KriptirajTekst(VratiPassword());
+            DodajUJson();
+            PopuniMrezu();
+            KorisiniciDataGrid.Items.Refresh();
 
         }
         private string KriptirajTekst(string tekst)
@@ -74,12 +78,12 @@ namespace CryptPasword.UC
             tekst = proces.Encrypt();
             return tekst;
         }
-        private void DodajUJson(string ime, string pasword)
+        private void DodajUJson()
         {
-            _korisnik.Ime = ime;
-            _korisnik.Password = pasword;
+            
             var dodajKorisnika = new CitajPisiJson(_korisnik);
             dodajKorisnika.DodajKorisnikaUJson();
+            
            
         }
 
