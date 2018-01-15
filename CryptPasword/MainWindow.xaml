@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CryptPasword"
         xmlns:uc="clr-namespace:CryptPasword.UC"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="550">
+        Title="MainWindow" Height="450" Width="550">
     <TabControl>
         <TabItem Header="start">
             <Grid>

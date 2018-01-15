@@ -6,29 +6,29 @@
              xmlns:local="clr-namespace:CryptPasword.UC"
              xmlns:cryptLibrary="clr-namespace:CryptLibrary;assembly=CryptLibrary" x:Class="CryptPasword.UC.DodajObrisiKorisnika"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="450" Loaded="UserControl_Loaded">
+             d:DesignHeight="350" d:DesignWidth="450" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <CollectionViewSource x:Key="KorisiniciViewSource" d:DesignSource="{d:DesignInstance {x:Type cryptLibrary:Korisnici}, CreateList=True}"/>
     </UserControl.Resources>
     <DockPanel LastChildFill="False">
-        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="16" Margin="0,20" FontFamily="Comic Sans MS">DODAJ ILI OBRIŠI KORISNIKA</TextBlock>
-        <DataGrid DockPanel.Dock="Left" Width="150" Height="150" x:Name="KorisiniciDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="5,0" ItemsSource="{Binding}" EnableRowVirtualization="True" AutoGenerateColumns="False" VerticalAlignment="Top">
+        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="16" Margin="0,20" FontFamily="Comic Sans MS" Text="DODAJ ILI OBRIŠI KORISNIKA"/>
+        <DataGrid DockPanel.Dock="Top" Width="170" Height="150" x:Name="KorisiniciDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="5,0" ItemsSource="{Binding}" EnableRowVirtualization="True" AutoGenerateColumns="False" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="ImeColumn" Width="SizeToHeader" Header="Ime" Binding="{Binding Ime}"/>
-                <DataGridTextColumn x:Name="PasswordColumn" Width="SizeToHeader" Header="Password" Binding="{Binding Password}"/>
+                <DataGridTextColumn x:Name="ImeColumn" MinWidth="80" Width="Auto"  Header="Ime" Binding="{Binding Ime}"/>
+                <DataGridTextColumn x:Name="PasswordColumn" MinWidth="80" Width="Auto" Header="Password" Binding="{Binding Password}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Height="100" VerticalAlignment="Top" Margin="0,20">
-            <Label Content="Ime:"  HorizontalAlignment="Right" Margin="3"  VerticalAlignment="Center"/>
-            <Label Content="Password:"  HorizontalAlignment="Right" Margin="3" VerticalAlignment="Center"/>
+        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Height="100" VerticalAlignment="Top" Margin="70,20,5,0">
+            <Label Content="Ime:"  HorizontalAlignment="Right" Margin="3,6,0,0"  VerticalAlignment="Center"/>
+            <Label Content="Password:"  HorizontalAlignment="Right" Margin="3,2,0,0" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Height="100" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0,20">
             <TextBox x:Name="TxtIme"  HorizontalAlignment="Left" Height="23" Margin="3"   VerticalAlignment="Center" Width="100"/>
-            <PasswordBox x:Name="TxtPassword" HorizontalAlignment="Left" Height="23" Margin="3"  VerticalAlignment="Center" Width="100"  />
+            <TextBox x:Name="TxtPassword" HorizontalAlignment="Left" Height="23" Margin="3"  VerticalAlignment="Center" Width="100" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Left" Orientation="Vertical" VerticalAlignment="Top" Margin="0,20">
-            <Button x:Name="BtnDodaj" Content="Dodaj" Width="90" Margin="3,5,5,0" Click="BtnDodaj_Click" />
-            <Button x:Name="BtnObrisi" Content="Obriši" Width="90" Margin="5,7,5,8" Click="BtnObrisi_Click" />
+            <Button x:Name="BtnObrisi" Content="Obriši" Width="90" Margin="5" Click="BtnObrisi_Click" />
+            <Button x:Name="BtnDodaj" Content="Dodaj" Width="90" Margin="5,3" Click="BtnDodaj_Click" />
         </StackPanel>
     </DockPanel>
 </UserControl>

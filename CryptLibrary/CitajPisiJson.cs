@@ -25,34 +25,7 @@ namespace CryptLibrary
                 ["Password"] = _korisnik.Password
             };
             item.Add(itemToAdd);
-
             UpisiJsonFile(rss);
-
-
-
-
-            //var imena = from p in rss["Korisnici"]
-            //    select (string)p["Ime"];
-            //var passwordi = from p in rss["Korisnici"]
-            //    select (string)p["Password"];
-
-            //var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Encrypt()).ToList();
-            //var paswordArray = passwordi.Select(password => new EncDecrypt(password)).Select(sifra => sifra.Encrypt()).ToList();
-
-            //var listaKorisnika = new List<Korisnici>();
-            //foreach (var ime in imenaArray)
-            //{
-            //    foreach (var pass in paswordArray)
-            //    {
-            //        listaKorisnika.Add( new Korisnici {Ime = ime, Password = pass});
-            //        paswordArray.Remove(pass);
-            //        break;
-            //    }
-            //}
-           
-            
-            //var noviRss = new JObject(new JProperty("Korisnici", new JArray(from l in listaKorisnika select new JObject(new JProperty("Ime", l.Ime), new JProperty("Password", l.Password)))));
-            //UpisiJsonFile(noviRss);
         }
 
         private static void UpisiJsonFile(JObject rss)
@@ -60,7 +33,6 @@ namespace CryptLibrary
             using (var file = File.CreateText(@"Korisnici.json"))
             {
                 var serializer = new JsonSerializer {Formatting = Formatting.Indented};
-                //serialize object directly into file stream
                 serializer.Serialize(file, rss);
             }
         }

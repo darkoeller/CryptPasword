@@ -28,20 +28,11 @@ namespace CryptPasword.UC
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             PopuniMrezu();
-            //KorisiniciDataGrid.ItemsSource = PopuniMrezu();
         }
 
         private void PopuniMrezu()
         {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");            
-            var rss = JObject.Parse(jsonObject);
-            var imena = from p in rss["Korisnici"]
-                        select (string)p["Ime"];
-            var passwordi = from p in rss["Korisnici"]
-                            select (string)p["Password"];
-
-            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Decrypt()).ToList();
-            var paswordArray = passwordi.Select(password => new EncDecrypt(password)).Select(sifra => sifra.Decrypt()).ToList();
+            var imenaArray = ArrayImena(out var paswordArray);
 
             var listaKorisnika = new List<Korisnici>();
             foreach (var ime in imenaArray)
@@ -56,6 +47,20 @@ namespace CryptPasword.UC
             KorisiniciDataGrid.ItemsSource = listaKorisnika;
         }
 
+        private static List<string> ArrayImena(out List<string> paswordArray)
+        {
+            var jsonObject = File.ReadAllText(@"Korisnici.json");
+            var rss = JObject.Parse(jsonObject);
+            var imena = from p in rss["Korisnici"]
+                select (string) p["Ime"];
+            var passwordi = from p in rss["Korisnici"]
+                select (string) p["Password"];
+
+            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Decrypt()).ToList();
+            paswordArray = passwordi.Select(password => new EncDecrypt(password)).Select(sifra => sifra.Decrypt()).ToList();
+            return imenaArray;
+        }
+
 
         private void BtnObrisi_Click(object sender, RoutedEventArgs e)
         {
@@ -67,11 +72,18 @@ namespace CryptPasword.UC
         {
             _korisnik.Ime = KriptirajTekst(VratiIme());
             _korisnik.Password = KriptirajTekst(VratiPassword());
+            ProcesuirajKorisnika();
+            TxtIme.Text = string.Empty;
+            TxtPassword.Text = string.Empty;
+        }
+
+        private void ProcesuirajKorisnika()
+        {
             DodajUJson();
             PopuniMrezu();
             KorisiniciDataGrid.Items.Refresh();
-
         }
+
         private string KriptirajTekst(string tekst)
         {
             var proces = new EncDecrypt(tekst);
@@ -89,7 +101,7 @@ namespace CryptPasword.UC
 
         private string VratiPassword()
         {
-            if (!string.IsNullOrWhiteSpace(TxtPassword.Password))return TxtPassword.Password;
+            if (!string.IsNullOrWhiteSpace(TxtPassword.Text))return TxtPassword.Text;
                 MessageBox.Show("Niste ništa upisali");
                 return string.Empty;
         }
@@ -101,13 +113,5 @@ namespace CryptPasword.UC
             return string.Empty;
 
         }
-
-        /*Dodati u json
-         * pročitaj fajl
-         * pročitaj textbox
-         * dodaj objekt
-         * kriptiraj sve 
-         * spremi u json
-         */
     }
 }
