@@ -33,17 +33,13 @@ namespace CryptPasword.UC
 
         private void PopuniMrezu()
         {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");
-            var rss = JObject.Parse(jsonObject);
-            var imena = from p in rss["Korisnici"]
-                select (string)p["Ime"];
-            var passwordi = from p in rss["Korisnici"]
-                select (string)p["Password"];
+            var rss = VratiObjekte(out IEnumerable<string> imena,
+                out var passwordi);
             var admin = from a in rss["Korisnici"]
                 select (bool)a["Admin"];
 
-            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Decrypt()).ToList();
-
+            var imenaArray = imena.Select(ime => new EncDecrypt(ime))
+                .Select(desifrator => desifrator.Decrypt()).ToList();
             var paswordArray = passwordi.Select(password => new EncDecrypt(password))
                 .Select(sifra => sifra.Decrypt())
                 .ToList();
@@ -68,10 +64,22 @@ namespace CryptPasword.UC
             KorisiniciDataGrid.ItemsSource = listaKorisnika;
         }
 
+        private static JObject VratiObjekte(out IEnumerable<string> imena, out IEnumerable<string> passwordi)
+        {
+            var jsonObject = File.ReadAllText(@"Korisnici.json");
+            var rss = JObject.Parse(jsonObject);
+            imena = from p in rss["Korisnici"]
+                select (string) p["Ime"];
+            passwordi = from p in rss["Korisnici"]
+                select (string) p["Password"];
+            return rss;
+        }
+
 
         private void BtnObrisi_Click(object sender, RoutedEventArgs e)
         {
-            
+            _korisnik = (Korisnici) KorisiniciDataGrid.SelectedItem;
+
 
         }
 
