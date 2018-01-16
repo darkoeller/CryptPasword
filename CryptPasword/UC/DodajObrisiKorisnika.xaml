@@ -4,31 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CryptPasword.UC"
-             xmlns:cryptLibrary="clr-namespace:CryptLibrary;assembly=CryptLibrary" x:Class="CryptPasword.UC.DodajObrisiKorisnika"
+             x:Class="CryptPasword.UC.DodajObrisiKorisnika"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="450" Loaded="UserControl_Loaded">
-    <UserControl.Resources>
-        <CollectionViewSource x:Key="KorisiniciViewSource" d:DesignSource="{d:DesignInstance {x:Type cryptLibrary:Korisnici}, CreateList=True}"/>
-    </UserControl.Resources>
+             d:DesignHeight="450" d:DesignWidth="450" Loaded="UserControl_Loaded">
     <DockPanel LastChildFill="False">
         <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="16" Margin="0,20" FontFamily="Comic Sans MS" Text="DODAJ ILI OBRIŠI KORISNIKA"/>
-        <DataGrid DockPanel.Dock="Top" Width="170" Height="150" x:Name="KorisiniciDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="5,0" ItemsSource="{Binding}" EnableRowVirtualization="True" AutoGenerateColumns="False" VerticalAlignment="Top">
+        <DataGrid DockPanel.Dock="Top" Width="370" Height="150" x:Name="KorisiniciDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="5,0" ItemsSource="{Binding}" EnableRowVirtualization="True" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" SelectionMode="Single" AlternatingRowBackground="#FFE6FFF7">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="ImeColumn" MinWidth="80" Width="Auto"  Header="Ime" Binding="{Binding Ime}"/>
-                <DataGridTextColumn x:Name="PasswordColumn" MinWidth="80" Width="Auto" Header="Password" Binding="{Binding Password}"/>
+                <DataGridTextColumn x:Name="ImeColumn" MinWidth="145" Width="Auto"  Header="Ime" Binding="{Binding Ime}"/>
+                <DataGridTextColumn x:Name="PasswordColumn" MinWidth="145" Width="Auto" Header="Password" Binding="{Binding Password}"/>
+                <DataGridTextColumn x:Name="AdminColumn" MinWidth="35" Width="Auto" Header="Admin" Binding="{Binding Admin}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Height="100" VerticalAlignment="Top" Margin="70,20,5,0">
+        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Height="70" VerticalAlignment="Top" Margin="70,20,5,0">
             <Label Content="Ime:"  HorizontalAlignment="Right" Margin="3,6,0,0"  VerticalAlignment="Center"/>
             <Label Content="Password:"  HorizontalAlignment="Right" Margin="3,2,0,0" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Height="100" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0,20">
             <TextBox x:Name="TxtIme"  HorizontalAlignment="Left" Height="23" Margin="3"   VerticalAlignment="Center" Width="100"/>
             <TextBox x:Name="TxtPassword" HorizontalAlignment="Left" Height="23" Margin="3"  VerticalAlignment="Center" Width="100" />
+            <CheckBox DockPanel.Dock="Bottom" x:Name="IsAdmin"  Content="Administrator" MinWidth="100" Margin="5,10"/>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" VerticalAlignment="Top" Margin="0,20">
-            <Button x:Name="BtnObrisi" Content="Obriši" Width="90" Margin="5" Click="BtnObrisi_Click" />
-            <Button x:Name="BtnDodaj" Content="Dodaj" Width="90" Margin="5,3" Click="BtnDodaj_Click" />
+        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" VerticalAlignment="Top" Margin="0,50">
+            <Button x:Name="BtnObrisi" Content="Obriši" Width="90" Margin="5" Click="BtnObrisi_Click" IsCancel="True" />
+            <Button x:Name="BtnDodaj" Content="Dodaj" Width="90" Margin="5,3" Click="BtnDodaj_Click" IsDefault="True" />
+            
         </StackPanel>
     </DockPanel>
 </UserControl>

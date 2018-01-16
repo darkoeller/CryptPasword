@@ -28,37 +28,44 @@ namespace CryptPasword.UC
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             PopuniMrezu();
+            TxtIme.Focus();
         }
 
         private void PopuniMrezu()
         {
-            var imenaArray = ArrayImena(out var paswordArray);
+            var jsonObject = File.ReadAllText(@"Korisnici.json");
+            var rss = JObject.Parse(jsonObject);
+            var imena = from p in rss["Korisnici"]
+                select (string)p["Ime"];
+            var passwordi = from p in rss["Korisnici"]
+                select (string)p["Password"];
+            var admin = from a in rss["Korisnici"]
+                select (bool)a["Admin"];
+
+            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Decrypt()).ToList();
+
+            var paswordArray = passwordi.Select(password => new EncDecrypt(password))
+                .Select(sifra => sifra.Decrypt())
+                .ToList();
+            var adminArray = admin.Select(ad => ad).ToList();
 
             var listaKorisnika = new List<Korisnici>();
+
             foreach (var ime in imenaArray)
             {
                  foreach (var pass in paswordArray)
                  {
-                     listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass});
-                     paswordArray.Remove(pass);
+                     foreach (var adm in adminArray)
+                     {
+                         listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass, Admin = adm});
+                         paswordArray.Remove(pass);
+                         adminArray.Remove(adm);
+                         break;
+                     }
                      break;
                  }
             }
             KorisiniciDataGrid.ItemsSource = listaKorisnika;
-        }
-
-        private static List<string> ArrayImena(out List<string> paswordArray)
-        {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");
-            var rss = JObject.Parse(jsonObject);
-            var imena = from p in rss["Korisnici"]
-                select (string) p["Ime"];
-            var passwordi = from p in rss["Korisnici"]
-                select (string) p["Password"];
-
-            var imenaArray = imena.Select(ime => new EncDecrypt(ime)).Select(desifrator => desifrator.Decrypt()).ToList();
-            paswordArray = passwordi.Select(password => new EncDecrypt(password)).Select(sifra => sifra.Decrypt()).ToList();
-            return imenaArray;
         }
 
 
@@ -72,9 +79,17 @@ namespace CryptPasword.UC
         {
             _korisnik.Ime = KriptirajTekst(VratiIme());
             _korisnik.Password = KriptirajTekst(VratiPassword());
+            _korisnik.Admin = JelAdmin();
             ProcesuirajKorisnika();
             TxtIme.Text = string.Empty;
             TxtPassword.Text = string.Empty;
+            IsAdmin.IsChecked = false;
+            TxtIme.Focus();
+        }
+
+        private bool JelAdmin()
+        {
+            return IsAdmin.IsChecked == true;
         }
 
         private void ProcesuirajKorisnika()

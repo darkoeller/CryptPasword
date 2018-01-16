@@ -22,7 +22,8 @@ namespace CryptLibrary
             var itemToAdd = new JObject
             {
                 ["Ime"] = _korisnik.Ime,
-                ["Password"] = _korisnik.Password
+                ["Password"] = _korisnik.Password,
+                ["Admin"] = _korisnik.Admin
             };
             item.Add(itemToAdd);
             UpisiJsonFile(rss);
