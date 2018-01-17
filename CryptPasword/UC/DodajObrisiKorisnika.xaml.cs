@@ -84,7 +84,8 @@ namespace CryptPasword.UC
             var rss = JObject.Parse(jsonObject);
             var jarray = (JArray) rss["Korisnici"];
             var osobe = jarray.ToObject<IList<Korisnici>>();
-            //if(osobe.Contains())
+            var zabrisati = osobe.SingleOrDefault(x => x.Ime == ime);
+            osobe.Remove(zabrisati);
 
 
         }
