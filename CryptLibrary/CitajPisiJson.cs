@@ -14,6 +14,11 @@ namespace CryptLibrary
         {
             _korisnik = korisnik;
         }
+
+        public CitajPisiJson()
+        {
+            ;
+        }
         public void DodajKorisnikaUJson()
         {
             var jsonObject = File.ReadAllText(@"Korisnici.json");
@@ -28,6 +33,12 @@ namespace CryptLibrary
             item.Add(itemToAdd);
             UpisiJsonFile(rss);
         }
+
+        public static void DodajKorisnike(IList<Korisnici> osobe)
+        {
+ 
+        }
+
 
         private static void UpisiJsonFile(JObject rss)
         {

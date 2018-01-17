@@ -86,6 +86,8 @@ namespace CryptPasword.UC
             var osobe = jarray.ToObject<IList<Korisnici>>();
             var zabrisati = osobe.SingleOrDefault(x => x.Ime == ime);
             osobe.Remove(zabrisati);
+            var upisi = new CitajPisiJson();
+            CitajPisiJson.DodajKorisnike(osobe);
 
 
         }
