@@ -79,20 +79,61 @@ namespace CryptPasword.UC
         private void BtnObrisi_Click(object sender, RoutedEventArgs e)
         {
             _korisnik = (Korisnici) KorisiniciDataGrid.SelectedItem;
+            var ime = KriptirajTekst(_korisnik.Ime);
+            var jsonObject = File.ReadAllText(@"Korisnici.json");
+            var rss = JObject.Parse(jsonObject);
+            var jarray = (JArray) rss["Korisnici"];
+            var osobe = jarray.ToObject<IList<Korisnici>>();
+            //if(osobe.Contains())
 
 
         }
 
         private void BtnDodaj_Click(object sender, RoutedEventArgs e)
         {
+            if (!DaliPostoji()) return;
+            KriptirajKorisnika();
+            ProcesuirajKorisnika();
+            OcistiKontrole();
+        }
+
+        private void KriptirajKorisnika()
+        {
             _korisnik.Ime = KriptirajTekst(VratiIme());
             _korisnik.Password = KriptirajTekst(VratiPassword());
             _korisnik.Admin = JelAdmin();
-            ProcesuirajKorisnika();
+        }
+
+        private void OcistiKontrole()
+        {
             TxtIme.Text = string.Empty;
             TxtPassword.Text = string.Empty;
             IsAdmin.IsChecked = false;
             TxtIme.Focus();
+        }
+
+        private bool DaliPostoji()
+        {
+            var postoji = NoviKorisnik();
+             
+            foreach (var dr in KorisiniciDataGrid.ItemsSource)
+            {
+                if (!dr.Equals(postoji)) continue;
+                MessageBox.Show("Korisnik je već zadan.\nOdaberite drugo ime ili pasword!");
+                return false;
+            }
+            return true;
+        }
+
+        private Korisnici NoviKorisnik()
+        {
+            var noviKorisnik = new Korisnici
+            {
+                Ime = VratiIme(),
+                Password = VratiPassword(),
+                Admin = JelAdmin()
+            };
+            return noviKorisnik;
         }
 
         private bool JelAdmin()
@@ -115,26 +156,22 @@ namespace CryptPasword.UC
         }
         private void DodajUJson()
         {
-            
             var dodajKorisnika = new CitajPisiJson(_korisnik);
             dodajKorisnika.DodajKorisnikaUJson();
-            
-           
         }
 
         private string VratiPassword()
         {
-            if (!string.IsNullOrWhiteSpace(TxtPassword.Text))return TxtPassword.Text;
-                MessageBox.Show("Niste ništa upisali");
+            if (!string.IsNullOrWhiteSpace(TxtPassword.Text.Trim()))return TxtPassword.Text;
+                MessageBox.Show("Niste ništa upisali u box password");
                 return string.Empty;
         }
 
         private string VratiIme()
         {
-            if (!string.IsNullOrWhiteSpace(TxtIme.Text)) return TxtIme.Text;
-            MessageBox.Show("Niste ništa upisali");
+            if (!string.IsNullOrWhiteSpace(TxtIme.Text.Trim())) return TxtIme.Text;
+            MessageBox.Show("Niste ništa upisali u box Ime!");
             return string.Empty;
-
         }
     }
 }
