@@ -4,7 +4,7 @@ using CryptLibrary;
 namespace CryptPasword
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -24,20 +24,18 @@ namespace CryptPasword
 
         private string VratiIme()
         {
-            if (!string.IsNullOrWhiteSpace(TxtKorisnik.Text))return TxtKorisnik.Text;
-                MessageBox.Show("Niste ništa upisali");
-                return string.Empty;
-            
+            if (!string.IsNullOrWhiteSpace(TxtKorisnik.Text)) return TxtKorisnik.Text;
+            MessageBox.Show("Niste ništa upisali");
+            return string.Empty;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             KriptirajPassword();
-            bool korisnikPostoji = ProvjeriUJson(_korisnik);
+            ProvjeriUJson(_korisnik);
             DodajUJson();
-            LblIzlaz.Content= _korisnik.Password;
+            LblIzlaz.Content = _korisnik.Password;
             //DodajKorisnikaUJson();
-
         }
 
         private bool ProvjeriUJson(Korisnici korisnik)
@@ -45,10 +43,8 @@ namespace CryptPasword
             var upit = new UpitUJson(_korisnik.Ime);
             var dobro = upit.VratiUpit();
             if (dobro)
-            {
                 MessageBox.Show("Korisnik se nalazi u bazi");
-            }
-            
+
             return false;
         }
 
@@ -70,9 +66,7 @@ namespace CryptPasword
         private void BtnDecrypt_Click(object sender, RoutedEventArgs e)
         {
             var pass = new EncDecrypt(LblIzlaz.Content.ToString());
-           LblIzlaz.Content = pass.Decrypt();
-
+            LblIzlaz.Content = pass.Decrypt();
         }
     }
 }
-                                           

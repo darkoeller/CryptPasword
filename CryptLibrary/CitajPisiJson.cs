@@ -19,11 +19,12 @@ namespace CryptLibrary
         {
             ;
         }
+
         public void DodajKorisnikaUJson()
         {
             var jsonObject = File.ReadAllText(@"Korisnici.json");
             var rss = JObject.Parse(jsonObject);
-            var item = (JArray)rss["Korisnici"];
+            var item = (JArray) rss["Korisnici"];
             var itemToAdd = new JObject
             {
                 ["Ime"] = _korisnik.Ime,
@@ -34,9 +35,13 @@ namespace CryptLibrary
             UpisiJsonFile(rss);
         }
 
-        public static void DodajKorisnike(IList<Korisnici> osobe)
+        public static void ObrisiKorisnika(IList<Korisnici> osoba)
         {
- 
+            var jsonObject = new JObject(new JProperty("Korisnici",
+                new JArray(from k in osoba
+                    select new JObject(new JProperty("Ime", k.Ime),
+                        new JProperty("Password", k.Password), new JProperty("Admin", k.Admin)))));
+            UpisiJsonFile(jsonObject);
         }
 
 

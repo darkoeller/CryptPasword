@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Markup;
 using CryptLibrary;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace CryptPasword.UC
 {
     /// <summary>
-    /// Interaction logic for DodajObrisiKorisnika.xaml
+    ///     Interaction logic for DodajObrisiKorisnika.xaml
     /// </summary>
-    public partial class DodajObrisiKorisnika : UserControl
+    public partial class DodajObrisiKorisnika
     {
-        private  Korisnici _korisnik = new Korisnici();
+        private Korisnici _korisnik = new Korisnici();
 
         public DodajObrisiKorisnika()
         {
@@ -36,30 +30,27 @@ namespace CryptPasword.UC
             var rss = VratiObjekte(out IEnumerable<string> imena,
                 out var passwordi);
             var admin = from a in rss["Korisnici"]
-                select (bool)a["Admin"];
+                select (bool) a["Admin"];
 
             var imenaArray = imena.Select(ime => new EncDecrypt(ime))
-                .Select(desifrator => desifrator.Decrypt()).ToList();
+                .Select(desifrator => desifrator.Decrypt())
+                .ToList();
             var paswordArray = passwordi.Select(password => new EncDecrypt(password))
                 .Select(sifra => sifra.Decrypt())
                 .ToList();
             var adminArray = admin.Select(ad => ad).ToList();
-
             var listaKorisnika = new List<Korisnici>();
-
             foreach (var ime in imenaArray)
+            foreach (var pass in paswordArray)
             {
-                 foreach (var pass in paswordArray)
-                 {
-                     foreach (var adm in adminArray)
-                     {
-                         listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass, Admin = adm});
-                         paswordArray.Remove(pass);
-                         adminArray.Remove(adm);
-                         break;
-                     }
-                     break;
-                 }
+                foreach (var adm in adminArray)
+                {
+                    listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass, Admin = adm});
+                    paswordArray.Remove(pass);
+                    adminArray.Remove(adm);
+                    break;
+                }
+                break;
             }
             KorisiniciDataGrid.ItemsSource = listaKorisnika;
         }
@@ -80,16 +71,21 @@ namespace CryptPasword.UC
         {
             _korisnik = (Korisnici) KorisiniciDataGrid.SelectedItem;
             var ime = KriptirajTekst(_korisnik.Ime);
+            var osobe = IzvuciListuKorisnika();
+            var zabrisati = osobe.SingleOrDefault(x => x.Ime == ime);
+            osobe.Remove(zabrisati);
+            CitajPisiJson.ObrisiKorisnika(osobe);
+            PopuniMrezu();
+            KorisiniciDataGrid.Items.Refresh();
+        }
+
+        private static IList<Korisnici> IzvuciListuKorisnika()
+        {
             var jsonObject = File.ReadAllText(@"Korisnici.json");
             var rss = JObject.Parse(jsonObject);
             var jarray = (JArray) rss["Korisnici"];
             var osobe = jarray.ToObject<IList<Korisnici>>();
-            var zabrisati = osobe.SingleOrDefault(x => x.Ime == ime);
-            osobe.Remove(zabrisati);
-            var upisi = new CitajPisiJson();
-            CitajPisiJson.DodajKorisnike(osobe);
-
-
+            return osobe;
         }
 
         private void BtnDodaj_Click(object sender, RoutedEventArgs e)
@@ -118,14 +114,10 @@ namespace CryptPasword.UC
         private bool DaliPostoji()
         {
             var postoji = NoviKorisnik();
-             
-            foreach (var dr in KorisiniciDataGrid.ItemsSource)
-            {
-                if (!dr.Equals(postoji)) continue;
-                MessageBox.Show("Korisnik je već zadan.\nOdaberite drugo ime ili pasword!");
-                return false;
-            }
-            return true;
+
+            if (!KorisiniciDataGrid.ItemsSource.Cast<object>().Contains(postoji)) return true;
+            MessageBox.Show("Korisnik je već zadan.\nOdaberite drugo ime ili pasword!");
+            return false;
         }
 
         private Korisnici NoviKorisnik()
@@ -151,12 +143,13 @@ namespace CryptPasword.UC
             KorisiniciDataGrid.Items.Refresh();
         }
 
-        private string KriptirajTekst(string tekst)
+        private static string KriptirajTekst(string tekst)
         {
             var proces = new EncDecrypt(tekst);
             tekst = proces.Encrypt();
             return tekst;
         }
+
         private void DodajUJson()
         {
             var dodajKorisnika = new CitajPisiJson(_korisnik);
@@ -165,9 +158,9 @@ namespace CryptPasword.UC
 
         private string VratiPassword()
         {
-            if (!string.IsNullOrWhiteSpace(TxtPassword.Text.Trim()))return TxtPassword.Text;
-                MessageBox.Show("Niste ništa upisali u box password");
-                return string.Empty;
+            if (!string.IsNullOrWhiteSpace(TxtPassword.Text.Trim())) return TxtPassword.Text;
+            MessageBox.Show("Niste ništa upisali u box password");
+            return string.Empty;
         }
 
         private string VratiIme()
