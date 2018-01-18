@@ -8,8 +8,8 @@
     mc:Ignorable="d"
     d:DesignHeight="405" d:DesignWidth="440" Loaded="UserControl_Loaded">
     <StackPanel Margin="0,0,0,0" Orientation="Vertical">
-        <StackPanel Height="350" Margin="0" Orientation="Vertical" VerticalAlignment="Top">
-            <DockPanel LastChildFill="False"  Margin="0,0,-0.119,0">
+        <StackPanel Height="330" Margin="0" Orientation="Vertical" VerticalAlignment="Top">
+            <DockPanel LastChildFill="False"  Margin="0">
                 <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="16" Margin="0,20"
                     FontFamily="Comic Sans MS" Text="DODAJ ILI OBRIŠI KORISNIKA" />
                 <DataGrid DockPanel.Dock="Top" Width="370" Height="150" x:Name="KorisiniciDataGrid"
@@ -41,6 +41,7 @@
             <Button x:Name="BtnObrisi"  Content="Obriši korisnika" Width="120" Margin="0" Click="BtnObrisi_Click" IsCancel="True" MinHeight="30" />
             <Button x:Name="BtnDodaj" Content="Dodaj novog" Width="120" Margin="50,0,0,0" Click="BtnDodaj_Click" IsDefault="True" MinHeight="30" />
         </StackPanel>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,10,0,0" Text="Korisnike ne možete uređivati. Dodajte ih ili obrišite sa kontrolama iznad." />
     </StackPanel>
 
 </UserControl>
