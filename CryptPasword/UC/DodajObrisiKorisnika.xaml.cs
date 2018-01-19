@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -24,6 +25,11 @@ namespace CryptPasword.UC
             PopuniMrezu();
             TxtIme.Focus();
         }
+        private string VratiPassword => TxtPassword.Text.Trim();
+
+        private string VratiIme => TxtIme.Text.Trim();
+
+        private bool JelAdmin => IsAdmin.IsChecked == true;
 
         private void PopuniMrezu()
         {
@@ -41,17 +47,17 @@ namespace CryptPasword.UC
             var adminArray = admin.Select(ad => ad).ToList();
             var listaKorisnika = new List<Korisnici>();
             foreach (var ime in imenaArray)
-            foreach (var pass in paswordArray)
-            {
-                foreach (var adm in adminArray)
+                foreach (var pass in paswordArray)
                 {
-                    listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass, Admin = adm});
-                    paswordArray.Remove(pass);
-                    adminArray.Remove(adm);
+                    foreach (var adm in adminArray)
+                    {
+                        listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass, Admin = adm});
+                        paswordArray.Remove(pass);
+                        adminArray.Remove(adm);
+                        break;
+                    }
                     break;
                 }
-                break;
-            }
             KorisiniciDataGrid.ItemsSource = listaKorisnika;
         }
 
@@ -66,17 +72,31 @@ namespace CryptPasword.UC
             return rss;
         }
 
-
         private void BtnObrisi_Click(object sender, RoutedEventArgs e)
         {
-            _korisnik = (Korisnici) KorisiniciDataGrid.SelectedItem;
+            if (KorisiniciDataGrid.SelectedIndex == -1)
+            {
+                MessageBox.Show("Niste nikog odabrali za brisanje");
+                return;
+            }
+            _korisnik = (Korisnici)KorisiniciDataGrid.SelectedItem ;
             var ime = KriptirajTekst(_korisnik.Ime);
             var osobe = IzvuciListuKorisnika();
+            try
+            {
             var zabrisati = osobe.SingleOrDefault(x => x.Ime == ime);
             osobe.Remove(zabrisati);
             CitajPisiJson.ObrisiKorisnika(osobe);
             PopuniMrezu();
             KorisiniciDataGrid.Items.Refresh();
+            KorisiniciDataGrid.SelectedIndex = -1;
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Niste nikog označili za brisanje!");
+                //return;
+            }
+          
         }
 
         private static IList<Korisnici> IzvuciListuKorisnika()
@@ -90,6 +110,12 @@ namespace CryptPasword.UC
 
         private void BtnDodaj_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(TxtIme.Text.Trim()) || string.IsNullOrWhiteSpace(TxtPassword.Text.Trim()))
+            {
+                 MessageBox.Show("Upišite nešto u text boxove!");
+                 TxtIme.Focus();
+                 return;
+            }
             if (!DaliPostoji()) return;
             KriptirajKorisnika();
             ProcesuirajKorisnika();
@@ -98,9 +124,9 @@ namespace CryptPasword.UC
 
         private void KriptirajKorisnika()
         {
-            _korisnik.Ime = KriptirajTekst(VratiIme());
-            _korisnik.Password = KriptirajTekst(VratiPassword());
-            _korisnik.Admin = JelAdmin();
+            _korisnik.Ime = KriptirajTekst(VratiIme);
+            _korisnik.Password = KriptirajTekst(VratiPassword);
+            _korisnik.Admin = JelAdmin;
         }
 
         private void OcistiKontrole()
@@ -114,9 +140,9 @@ namespace CryptPasword.UC
         private bool DaliPostoji()
         {
             var postoji = NoviKorisnik();
-
             if (!KorisiniciDataGrid.ItemsSource.Cast<object>().Contains(postoji)) return true;
-            MessageBox.Show("Korisnik je već zadan.\nOdaberite drugo ime ili pasword!");
+            MessageBox.Show("Korisnik je već zadan.\nOdaberite drugo ime i, ili pasword!");
+            OcistiKontrole();
             return false;
         }
 
@@ -124,16 +150,11 @@ namespace CryptPasword.UC
         {
             var noviKorisnik = new Korisnici
             {
-                Ime = VratiIme(),
-                Password = VratiPassword(),
-                Admin = JelAdmin()
+                Ime = VratiIme,
+                Password = VratiPassword,
+                Admin = JelAdmin
             };
             return noviKorisnik;
-        }
-
-        private bool JelAdmin()
-        {
-            return IsAdmin.IsChecked == true;
         }
 
         private void ProcesuirajKorisnika()
@@ -154,20 +175,6 @@ namespace CryptPasword.UC
         {
             var dodajKorisnika = new CitajPisiJson(_korisnik);
             dodajKorisnika.DodajKorisnikaUJson();
-        }
-
-        private string VratiPassword()
-        {
-            if (!string.IsNullOrWhiteSpace(TxtPassword.Text.Trim())) return TxtPassword.Text;
-            MessageBox.Show("Niste ništa upisali u box password");
-            return string.Empty;
-        }
-
-        private string VratiIme()
-        {
-            if (!string.IsNullOrWhiteSpace(TxtIme.Text.Trim())) return TxtIme.Text;
-            MessageBox.Show("Niste ništa upisali u box Ime!");
-            return string.Empty;
         }
     }
 }
