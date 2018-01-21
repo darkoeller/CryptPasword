@@ -2,7 +2,7 @@
 {
     public enum Uloga
     {
-        Admin,
+        Admin = 1,
         SuperKorisnik,
         Korisnik
     }

@@ -24,6 +24,7 @@ namespace CryptPasword.UC
         {
             PopuniMrezu();
             TxtIme.Focus();
+            CmbUloga.ItemsSource = Enum.GetNames(typeof(Uloga));
         }
         private string VratiPassword => TxtPassword.Text.Trim();
 
