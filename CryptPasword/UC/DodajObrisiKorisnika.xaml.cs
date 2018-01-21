@@ -82,21 +82,12 @@ namespace CryptPasword.UC
             _korisnik = (Korisnici)KorisiniciDataGrid.SelectedItem ;
             var ime = KriptirajTekst(_korisnik.Ime);
             var osobe = IzvuciListuKorisnika();
-            try
-            {
             var zabrisati = osobe.SingleOrDefault(x => x.Ime == ime);
             osobe.Remove(zabrisati);
             CitajPisiJson.ObrisiKorisnika(osobe);
             PopuniMrezu();
             KorisiniciDataGrid.Items.Refresh();
             KorisiniciDataGrid.SelectedIndex = -1;
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show("Niste nikog označili za brisanje!");
-                //return;
-            }
-          
         }
 
         private static IList<Korisnici> IzvuciListuKorisnika()
