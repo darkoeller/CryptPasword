@@ -3,6 +3,7 @@
     public enum Uloga
     {
         Admin,
+        SuperKorisnik,
         Korisnik
     }
 }

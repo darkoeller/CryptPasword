@@ -29,14 +29,12 @@ namespace CryptPasword.UC
 
         private string VratiIme => TxtIme.Text.Trim();
 
-        private bool JelAdmin => IsAdmin.IsChecked == true;
 
         private void PopuniMrezu()
         {
-            var rss = VratiObjekte(out IEnumerable<string> imena,
-                out var passwordi);
-            var admin = from a in rss["Korisnici"]
-                select (bool) a["Admin"];
+            var rss = VratiObjekte(out IEnumerable<string> imena, out var passwordi);
+            var uloge = from a in rss["Korisnici"]
+                        select a["Uloga"];
 
             var imenaArray = imena.Select(ime => new EncDecrypt(ime))
                 .Select(desifrator => desifrator.Decrypt())
@@ -44,16 +42,16 @@ namespace CryptPasword.UC
             var paswordArray = passwordi.Select(password => new EncDecrypt(password))
                 .Select(sifra => sifra.Decrypt())
                 .ToList();
-            var adminArray = admin.Select(ad => ad).ToList();
+            var ulogeArray = uloge.Select(ad => ad).ToList();
             var listaKorisnika = new List<Korisnici>();
             foreach (var ime in imenaArray)
                 foreach (var pass in paswordArray)
                 {
-                    foreach (var adm in adminArray)
+                    foreach (var ul in ulogeArray)
                     {
-                        listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass, Admin = adm});
+                        listaKorisnika.Add(new Korisnici { Ime = ime, Password = pass, Uloga = ul });
                         paswordArray.Remove(pass);
-                        adminArray.Remove(adm);
+                        ulogeArray.Remove(ul);
                         break;
                     }
                     break;
@@ -117,14 +115,19 @@ namespace CryptPasword.UC
         {
             _korisnik.Ime = KriptirajTekst(VratiIme);
             _korisnik.Password = KriptirajTekst(VratiPassword);
-            _korisnik.Admin = JelAdmin;
+            _korisnik.Uloga = KriptirajTekst(VratiUlogu().ToString());
+        }
+
+        private Uloga VratiUlogu()
+        {
+          return (Uloga) CmbUloga.SelectedIndex;
         }
 
         private void OcistiKontrole()
         {
             TxtIme.Text = string.Empty;
             TxtPassword.Text = string.Empty;
-            IsAdmin.IsChecked = false;
+           // IsAdmin.IsChecked = false;
             TxtIme.Focus();
         }
 
@@ -143,7 +146,7 @@ namespace CryptPasword.UC
             {
                 Ime = VratiIme,
                 Password = VratiPassword,
-                Admin = JelAdmin
+                Uloga= VratiUlogu().ToString()
             };
             return noviKorisnik;
         }

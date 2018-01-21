@@ -21,20 +21,21 @@
                             <DataGridTextColumn MinWidth="145" Width="Auto" Header="Ime" Binding="{Binding Ime}" />
                             <DataGridTextColumn MinWidth="145" Width="Auto" Header="Password"
                                 Binding="{Binding Password}" />
-                            <DataGridTextColumn MinWidth="35" Width="Auto" Header="Admin"
-                                Binding="{Binding Admin}" />
+                            <DataGridTextColumn MinWidth="35" Width="Auto" Header="Uloga"
+                                Binding="{Binding Uloga}" />
                         </DataGrid.Columns>
                     </DataGrid>
                     <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Height="90" VerticalAlignment="Top" Margin="90,20,0,0" Width="100">
                         <Label Content="Ime:" HorizontalAlignment="Left" Margin="3,6,0,0" />
                         <Label Content="Password:" HorizontalAlignment="Left" Margin="3,2,0,0" VerticalAlignment="Center" />
+                        <Label Content="Uloga:" HorizontalAlignment="Left" Margin="3,0" />
                     </StackPanel>
                     <StackPanel  Orientation="Vertical" Height="90" DockPanel.Dock="Left" VerticalAlignment="Top" Width="200" Margin="0,20,60,0">
                         <TextBox x:Name="TxtIme" HorizontalAlignment="Left" Height="23" Margin="3"
                             Width="200" />
                         <TextBox x:Name="TxtPassword" HorizontalAlignment="Left" Height="23" Margin="3" 
                             Width="200" />
-                        <CheckBox x:Name="IsAdmin" Content="Administrator" MinWidth="100" Margin="10,10,0,0" />
+                        <ComboBox x:Name="CmbUloga" HorizontalAlignment="Left" Width="180" Margin="3" />
                     </StackPanel>
                 </DockPanel>
             </Border>

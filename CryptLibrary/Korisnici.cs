@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CryptLibrary
 {
@@ -13,15 +14,15 @@ namespace CryptLibrary
         [JsonProperty("Password")]
         public string Password { get; set; }
 
-        [JsonProperty("Admin")]
-        public bool Admin { get; set; }
+        [JsonProperty("Uloga")]
+        public JToken Uloga { get; set; }
 
         public bool Equals(Korisnici other)
         {
             return other != null &&
                    Ime == other.Ime &&
-                   Password == other.Password &&
-                   Admin == other.Admin;
+                   Password == other.Password;
+            //&& Admin == other.Admin;
         }
 
         public override int GetHashCode()
@@ -30,7 +31,7 @@ namespace CryptLibrary
             {
                 var hashCode = Ime != null ? Ime.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ Admin.GetHashCode();
+                hashCode = (hashCode * 397) ^ Uloga.GetHashCode();
                 return hashCode;
             }
         }

@@ -29,7 +29,7 @@ namespace CryptLibrary
             {
                 ["Ime"] = _korisnik.Ime,
                 ["Password"] = _korisnik.Password,
-                ["Admin"] = _korisnik.Admin
+               // ["Uloga"] = _korisnik.Uloga
             };
             item.Add(itemToAdd);
             UpisiJsonFile(rss);
@@ -40,7 +40,7 @@ namespace CryptLibrary
             var jsonObject = new JObject(new JProperty("Korisnici",
                 new JArray(from k in osoba
                     select new JObject(new JProperty("Ime", k.Ime),
-                        new JProperty("Password", k.Password), new JProperty("Admin", k.Admin)))));
+                        new JProperty("Password", k.Password), new JProperty("Admin", k.Uloga)))));
             UpisiJsonFile(jsonObject);
         }
 
