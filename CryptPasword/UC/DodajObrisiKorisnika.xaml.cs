@@ -106,7 +106,7 @@ namespace CryptPasword.UC
                  TxtIme.Focus();
                  return;
             }
-            //if (!DaliPostoji()) return;
+            if (!DaliPostoji()) return;
             KriptirajKorisnika();
             ProcesuirajKorisnika();
             OcistiKontrole();
