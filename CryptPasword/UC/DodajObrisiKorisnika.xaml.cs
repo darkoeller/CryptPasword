@@ -22,7 +22,7 @@ namespace CryptPasword.UC
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //PopuniMrezu();
+            PopuniMrezu();
             TxtIme.Focus();
             CmbUloga.ItemsSource = Enum.GetNames(typeof(Uloga));
         }
