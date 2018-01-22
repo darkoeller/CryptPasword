@@ -16,7 +16,7 @@ namespace CryptLibrary
         public string Password { get; set; }
 
         [JsonProperty("Uloga")]
-       // [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public JToken Uloga { get; set; }
 
         public bool Equals(Korisnici other)
@@ -33,7 +33,7 @@ namespace CryptLibrary
             {
                 var hashCode = Ime != null ? Ime.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
-               // hashCode = (hashCode * 397) ^ Uloga.GetHashCode();
+                hashCode = (hashCode * 397) ^ Uloga.GetHashCode();
                 return hashCode;
             }
         }

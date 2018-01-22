@@ -29,7 +29,7 @@ namespace CryptLibrary
             {
                 ["Ime"] = _korisnik.Ime,
                 ["Password"] = _korisnik.Password,
-               // ["Uloga"] = _korisnik.Uloga
+                ["Uloga"] = _korisnik.Uloga
             };
             item.Add(itemToAdd);
             UpisiJsonFile(rss);

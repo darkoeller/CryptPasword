@@ -22,7 +22,7 @@ namespace CryptPasword.UC
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            PopuniMrezu();
+            //PopuniMrezu();
             TxtIme.Focus();
             CmbUloga.ItemsSource = Enum.GetNames(typeof(Uloga));
         }
@@ -35,7 +35,7 @@ namespace CryptPasword.UC
         {
             var rss = VratiObjekte(out IEnumerable<string> imena, out var passwordi);
             var uloge = from a in rss["Korisnici"]
-                        select a["Uloga"];
+                        select (string) a["Uloga"];
 
             var imenaArray = imena.Select(ime => new EncDecrypt(ime))
                 .Select(desifrator => desifrator.Decrypt())
@@ -43,7 +43,7 @@ namespace CryptPasword.UC
             var paswordArray = passwordi.Select(password => new EncDecrypt(password))
                 .Select(sifra => sifra.Decrypt())
                 .ToList();
-            var ulogeArray = uloge.Select(ad => ad).ToList();
+            var ulogeArray = uloge.Select(ad => new EncDecrypt(ad)).Select(ad =>ad.Decrypt()).ToList();
             var listaKorisnika = new List<Korisnici>();
             foreach (var ime in imenaArray)
                 foreach (var pass in paswordArray)
@@ -106,7 +106,7 @@ namespace CryptPasword.UC
                  TxtIme.Focus();
                  return;
             }
-            if (!DaliPostoji()) return;
+            //if (!DaliPostoji()) return;
             KriptirajKorisnika();
             ProcesuirajKorisnika();
             OcistiKontrole();
@@ -116,19 +116,18 @@ namespace CryptPasword.UC
         {
             _korisnik.Ime = KriptirajTekst(VratiIme);
             _korisnik.Password = KriptirajTekst(VratiPassword);
-            _korisnik.Uloga = KriptirajTekst(VratiUlogu().ToString());
+            _korisnik.Uloga = KriptirajTekst(VratiUlogu());
         }
 
-        private Uloga VratiUlogu()
+        private string VratiUlogu()
         {
-          return (Uloga) CmbUloga.SelectedIndex;
+          return  CmbUloga.SelectedItem.ToString();
         }
 
         private void OcistiKontrole()
         {
             TxtIme.Text = string.Empty;
             TxtPassword.Text = string.Empty;
-           // IsAdmin.IsChecked = false;
             TxtIme.Focus();
         }
 
@@ -147,7 +146,7 @@ namespace CryptPasword.UC
             {
                 Ime = VratiIme,
                 Password = VratiPassword,
-                Uloga= VratiUlogu().ToString()
+                Uloga= VratiUlogu()
             };
             return noviKorisnik;
         }
