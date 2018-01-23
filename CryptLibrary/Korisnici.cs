@@ -9,6 +9,7 @@ namespace CryptLibrary
     [Serializable]
     public class Korisnici : IEquatable<Korisnici>
     {
+
         [JsonProperty("Ime")]
         public string Ime { get; set; }
 
@@ -19,12 +20,13 @@ namespace CryptLibrary
         [JsonConverter(typeof(StringEnumConverter))]
         public JToken Uloga { get; set; }
 
+       
+
         public bool Equals(Korisnici other)
         {
             return other != null &&
                    Ime == other.Ime &&
                    Password == other.Password;
-            //&& Admin == other.Admin;
         }
 
         public override int GetHashCode()

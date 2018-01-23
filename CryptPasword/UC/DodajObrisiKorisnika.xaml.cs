@@ -25,6 +25,7 @@ namespace CryptPasword.UC
             PopuniMrezu();
             TxtIme.Focus();
             CmbUloga.ItemsSource = Enum.GetNames(typeof(Uloga));
+            CmbUloga.SelectedIndex = 0;
         }
         private string VratiPassword => TxtPassword.Text.Trim();
 
@@ -33,17 +34,14 @@ namespace CryptPasword.UC
 
         private void PopuniMrezu()
         {
-            var rss = VratiObjekte(out IEnumerable<string> imena, out var passwordi);
-            var uloge = from a in rss["Korisnici"]
-                        select (string) a["Uloga"];
-
+             VratiObjekte(out IEnumerable<string> imena, out var passwordi, out var uloge);
             var imenaArray = imena.Select(ime => new EncDecrypt(ime))
                 .Select(desifrator => desifrator.Decrypt())
                 .ToList();
             var paswordArray = passwordi.Select(password => new EncDecrypt(password))
                 .Select(sifra => sifra.Decrypt())
                 .ToList();
-            var ulogeArray = uloge.Select(ad => new EncDecrypt(ad)).Select(ad =>ad.Decrypt()).ToList();
+            var ulogeArray = uloge.Select(ad => new EncDecrypt(ad.ToString())).Select(ad =>ad.Decrypt()).ToList();
             var listaKorisnika = new List<Korisnici>();
             foreach (var ime in imenaArray)
                 foreach (var pass in paswordArray)
@@ -60,7 +58,7 @@ namespace CryptPasword.UC
             KorisiniciDataGrid.ItemsSource = listaKorisnika;
         }
 
-        private static JObject VratiObjekte(out IEnumerable<string> imena, out IEnumerable<string> passwordi)
+        private static JObject VratiObjekte(out IEnumerable<string> imena, out IEnumerable<string> passwordi, out IEnumerable<string> uloge)
         {
             var jsonObject = File.ReadAllText(@"Korisnici.json");
             var rss = JObject.Parse(jsonObject);
@@ -68,6 +66,9 @@ namespace CryptPasword.UC
                 select (string) p["Ime"];
             passwordi = from p in rss["Korisnici"]
                 select (string) p["Password"];
+
+            uloge = from a in rss["Korisnici"]
+                select (string) a["Uloga"];
             return rss;
         }
 
@@ -91,11 +92,11 @@ namespace CryptPasword.UC
 
         private static IList<Korisnici> IzvuciListuKorisnika()
         {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");
-            var rss = JObject.Parse(jsonObject);
-            var jarray = (JArray) rss["Korisnici"];
-            var osobe = jarray.ToObject<IList<Korisnici>>();
-            return osobe;
+           var jsonObject = File.ReadAllText(@"Korisnici.json");
+           var rss = JObject.Parse(jsonObject);
+           var jarray = (JArray) rss["Korisnici"];
+           IList<Korisnici> listaResults = jarray.Select(p => new Korisnici {Ime=(string) p["Ime"], Password=(string) p["Password"], Uloga=(string) p["Uloga"] }).ToList();
+           return listaResults;
         }
 
         private void BtnDodaj_Click(object sender, RoutedEventArgs e)

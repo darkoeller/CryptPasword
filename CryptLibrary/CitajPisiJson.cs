@@ -40,7 +40,7 @@ namespace CryptLibrary
             var jsonObject = new JObject(new JProperty("Korisnici",
                 new JArray(from k in osoba
                     select new JObject(new JProperty("Ime", k.Ime),
-                        new JProperty("Password", k.Password), new JProperty("Admin", k.Uloga)))));
+                        new JProperty("Password", k.Password), new JProperty("Uloga", k.Uloga)))));
             UpisiJsonFile(jsonObject);
         }
 
