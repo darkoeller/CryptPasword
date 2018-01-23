@@ -8,9 +8,6 @@ using Newtonsoft.Json.Linq;
 
 namespace CryptPasword.UC
 {
-    /// <summary>
-    ///     Interaction logic for DodajObrisiKorisnika.xaml
-    /// </summary>
     public partial class DodajObrisiKorisnika
     {
         private Korisnici _korisnik = new Korisnici();
@@ -34,7 +31,7 @@ namespace CryptPasword.UC
 
         private void PopuniMrezu()
         {
-             VratiObjekte(out IEnumerable<string> imena, out var passwordi, out var uloge);
+             VratiObjekte(out var imena, out var passwordi, out var uloge);
             var imenaArray = imena.Select(ime => new EncDecrypt(ime))
                 .Select(desifrator => desifrator.Decrypt())
                 .ToList();
@@ -58,7 +55,7 @@ namespace CryptPasword.UC
             KorisiniciDataGrid.ItemsSource = listaKorisnika;
         }
 
-        private static JObject VratiObjekte(out IEnumerable<string> imena, out IEnumerable<string> passwordi, out IEnumerable<string> uloge)
+        private static void VratiObjekte(out IEnumerable<string> imena, out IEnumerable<string> passwordi, out IEnumerable<string> uloge)
         {
             var jsonObject = File.ReadAllText(@"Korisnici.json");
             var rss = JObject.Parse(jsonObject);
@@ -66,10 +63,8 @@ namespace CryptPasword.UC
                 select (string) p["Ime"];
             passwordi = from p in rss["Korisnici"]
                 select (string) p["Password"];
-
             uloge = from a in rss["Korisnici"]
                 select (string) a["Uloga"];
-            return rss;
         }
 
         private void BtnObrisi_Click(object sender, RoutedEventArgs e)
@@ -82,7 +77,7 @@ namespace CryptPasword.UC
             _korisnik = (Korisnici)KorisiniciDataGrid.SelectedItem ;
             var ime = KriptirajTekst(_korisnik.Ime);
             var osobe = IzvuciListuKorisnika();
-            var zabrisati = osobe.SingleOrDefault(x => x.Ime == ime);
+            var zabrisati = osobe.FirstOrDefault(x => x.Ime == ime);
             osobe.Remove(zabrisati);
             CitajPisiJson.ObrisiKorisnika(osobe);
             PopuniMrezu();

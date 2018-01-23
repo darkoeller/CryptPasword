@@ -17,7 +17,6 @@ namespace CryptLibrary
 
         public CitajPisiJson()
         {
-            ;
         }
 
         public void DodajKorisnikaUJson()
@@ -35,7 +34,7 @@ namespace CryptLibrary
             UpisiJsonFile(rss);
         }
 
-        public static void ObrisiKorisnika(IList<Korisnici> osoba)
+        public static void ObrisiKorisnika(IEnumerable<Korisnici> osoba)
         {
             var jsonObject = new JObject(new JProperty("Korisnici",
                 new JArray(from k in osoba
