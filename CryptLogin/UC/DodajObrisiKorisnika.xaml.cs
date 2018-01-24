@@ -4,9 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using CryptLibrary;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CryptPasword.UC
+namespace CryptLogin.UC
 {
     public partial class DodajObrisiKorisnika
     {
@@ -45,7 +46,7 @@ namespace CryptPasword.UC
                 {
                     foreach (var ul in ulogeArray)
                     {
-                        listaKorisnika.Add(new Korisnici { Ime = ime, Password = pass, Uloga = ul });
+                        listaKorisnika.Add(new Korisnici { Ime = ime, Password = pass,  Uloga = ul });
                         paswordArray.Remove(pass);
                         ulogeArray.Remove(ul);
                         break;
@@ -112,12 +113,13 @@ namespace CryptPasword.UC
         {
             _korisnik.Ime = KriptirajTekst(VratiIme);
             _korisnik.Password = KriptirajTekst(VratiPassword);
-            _korisnik.Uloga = KriptirajTekst(VratiUlogu());
+           string uloga = JsonConvert.DeserializeObject(VratiUlogu());
+            _korisnik.Uloga = KriptirajTekst(uloga);
         }
 
         private string VratiUlogu()
         {
-          return  CmbUloga.SelectedItem.ToString();
+          return CmbUloga.SelectedItem.ToString();
         }
 
         private void OcistiKontrole()

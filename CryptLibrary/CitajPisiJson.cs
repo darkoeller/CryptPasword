@@ -28,7 +28,7 @@ namespace CryptLibrary
             {
                 ["Ime"] = _korisnik.Ime,
                 ["Password"] = _korisnik.Password,
-                ["Uloga"] = _korisnik.Uloga
+                ["Uloga"] = JToken.Parse(_korisnik.Uloga.ToString())
             };
             item.Add(itemToAdd);
             UpisiJsonFile(rss);
