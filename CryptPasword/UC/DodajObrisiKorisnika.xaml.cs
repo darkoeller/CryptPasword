@@ -71,7 +71,7 @@ namespace CryptPasword.UC
         {
             if (KorisiniciDataGrid.SelectedIndex == -1)
             {
-                MessageBox.Show("Niste nikog odabrali za brisanje");
+                MessageBox.Show("Niste nikog odabrali za brisanje!");
                 return;
             }
             _korisnik = (Korisnici)KorisiniciDataGrid.SelectedItem ;
