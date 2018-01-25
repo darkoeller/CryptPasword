@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CryptLibrary;
+using CryptLogin.UC;
 
 namespace CryptLogin
 {
@@ -20,9 +22,36 @@ namespace CryptLogin
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string _varijabla = string.Empty;
+
         public MainWindow()
         {
+          
             InitializeComponent();
+        }
+
+
+        private void BtnPrijava_Click(object sender, RoutedEventArgs e)
+        {
+            VratiKorisnika();
+            VratiPasword();
+        }
+
+        private string VratiKorisnika()
+        {
+            var ime =KriptirajTekst(TxtIme.Text.Trim());
+            return ime;
+        }
+
+        private void VratiPasword()
+        {
+            
+        }
+        private static string KriptirajTekst(string tekst)
+        {
+            var proces = new EncDecrypt(tekst);
+            tekst = proces.Encrypt();
+            return tekst;
         }
     }
 }

@@ -3,17 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CryptLogin"
+        xmlns:uc="clr-namespace:CryptLogin.UC"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="525">
+        Title="MainWindow" Height="550" Width="525"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <TabControl>
             <TabItem Header="Početna">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0">
                     <StackPanel Orientation="Horizontal" >
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Korisničko ime:" Margin="0,7,0,0"/>
-                            <TextBlock Text="Password: " Margin="0,15,0,0" />
+                            <TextBlock HorizontalAlignment="Right" Text="Korisničko ime:" Margin="0"/>
+                            <TextBlock HorizontalAlignment="Right" Text="Password: " Margin="0,22,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="TxtIme" Width="150" Margin="5,0,0,5"/>
@@ -21,14 +22,13 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Margin="0,15,0,0">
-                        <Button MinHeight="32" Content="Prijavite se u aplikaciju"></Button>
+                        <Button x:Name="BtnPrijava" MinHeight="32" Content="Prijavite se u aplikaciju" Click="BtnPrijava_Click"></Button>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Upravljanje korisnicima">
-                
+                <!--<uc:DodajObrisiKorisnika />-->
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>

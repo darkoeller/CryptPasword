@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using CryptLibrary;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace CryptLogin.UC
@@ -113,8 +112,7 @@ namespace CryptLogin.UC
         {
             _korisnik.Ime = KriptirajTekst(VratiIme);
             _korisnik.Password = KriptirajTekst(VratiPassword);
-           string uloga = JsonConvert.DeserializeObject(VratiUlogu());
-            _korisnik.Uloga = KriptirajTekst(uloga);
+            _korisnik.Uloga = KriptirajTekst(VratiUlogu());
         }
 
         private string VratiUlogu()
