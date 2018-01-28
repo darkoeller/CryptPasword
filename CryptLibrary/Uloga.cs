@@ -13,6 +13,8 @@ namespace CryptLibrary
         [EnumMember(Value = "SuperKorisnik")]
         SuperKorisnik,
         [EnumMember(Value = "Korisnik")]
-        Korisnik
+        Korisnik,
+        [EnumMember(Value = "Razina1")]
+        Razina1
     }
 }

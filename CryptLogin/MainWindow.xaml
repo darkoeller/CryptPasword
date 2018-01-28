@@ -14,7 +14,7 @@
                     <StackPanel Orientation="Horizontal" >
                         <StackPanel Orientation="Vertical">
                             <TextBlock HorizontalAlignment="Right" Text="Korisničko ime:" Margin="0"/>
-                            <TextBlock HorizontalAlignment="Right" Text="Password: " Margin="0,22,0,0" />
+                            <TextBlock HorizontalAlignment="Right" Text="Password: " Margin="0,20,0,2" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="TxtIme" Width="150" Margin="5,0,0,5"/>

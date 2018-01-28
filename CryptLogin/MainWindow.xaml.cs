@@ -22,7 +22,6 @@ namespace CryptLogin
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string _varijabla = string.Empty;
 
         public MainWindow()
         {
@@ -33,19 +32,32 @@ namespace CryptLogin
 
         private void BtnPrijava_Click(object sender, RoutedEventArgs e)
         {
-            VratiKorisnika();
-            VratiPasword();
-        }
-
-        private string VratiKorisnika()
-        {
-            var ime =KriptirajTekst(TxtIme.Text.Trim());
-            return ime;
-        }
-
-        private void VratiPasword()
-        {
             
+            var ime =  VratiIme();
+            var pass = VratiPasword();
+        }
+
+
+
+        private string VratiIme()
+        {
+            if (!string.IsNullOrWhiteSpace(TxtIme.Text))
+            {
+                string ime = TxtIme.Text.Trim();
+                KriptirajTekst(ime);
+                return ime;
+            }
+            MessageBox.Show("Upišite korisničko ime!");
+            return string.Empty;
+            
+        }
+
+        private string VratiPasword()
+        {
+            var pass = KriptirajTekst(TxtPass.Password.Trim());
+           var teks= TextBox.NameProperty.ToString();
+            return pass;
+
         }
         private static string KriptirajTekst(string tekst)
         {
@@ -53,5 +65,8 @@ namespace CryptLogin
             tekst = proces.Encrypt();
             return tekst;
         }
+        //provjeri da li ime i pasword postoje u jsonu
+        //ako postoje dozvoli korisniku pristup
+        //ako ne postoje ne puštaj ga vrati na početak
     }
 }
