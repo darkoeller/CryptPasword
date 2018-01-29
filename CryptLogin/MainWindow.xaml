@@ -10,7 +10,11 @@
     <Grid>
         <TabControl x:Name="KontrolaTabova">
             <TabItem x:Name="TabLogin" Header="Početna">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0">
+                <Border  VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="3" CornerRadius="3" BorderBrush="Indigo">
+                    <Border.Effect>
+                        <DropShadowEffect/>
+                    </Border.Effect>
+                    <StackPanel Orientation="Vertical" Margin="20">
                     <StackPanel Orientation="Horizontal" >
                         <StackPanel Orientation="Vertical">
                             <TextBlock HorizontalAlignment="Right" Text="Korisničko ime:" Margin="0"/>
@@ -25,9 +29,10 @@
                         <Button x:Name="BtnPrijava" MinHeight="32" Content="Prijavite se u aplikaciju" Click="BtnPrijava_Click" IsDefault="True"></Button>
                     </StackPanel>
                 </StackPanel>
+                </Border>
             </TabItem>
             <TabItem x:Name="TabUprava" Header="Upravljanje korisnicima" Opacity="1" Visibility="Collapsed">
-                <uc:DodajObrisiKorisnika />
+                <!--<uc:DodajObrisiKorisnika />-->
             </TabItem>
         </TabControl>
     </Grid>

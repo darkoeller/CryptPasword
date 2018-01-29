@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using Microsoft.SqlServer.Server;
 using Newtonsoft.Json.Linq;
 
 namespace CryptLibrary
