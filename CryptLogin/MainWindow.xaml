@@ -6,10 +6,10 @@
         xmlns:uc="clr-namespace:CryptLogin.UC"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="525"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid>
-        <TabControl>
-            <TabItem Header="Početna">
+        <TabControl x:Name="KontrolaTabova">
+            <TabItem x:Name="TabLogin" Header="Početna">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0">
                     <StackPanel Orientation="Horizontal" >
                         <StackPanel Orientation="Vertical">
@@ -22,12 +22,12 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Margin="0,15,0,0">
-                        <Button x:Name="BtnPrijava" MinHeight="32" Content="Prijavite se u aplikaciju" Click="BtnPrijava_Click"></Button>
+                        <Button x:Name="BtnPrijava" MinHeight="32" Content="Prijavite se u aplikaciju" Click="BtnPrijava_Click" IsDefault="True"></Button>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Upravljanje korisnicima">
-                <!--<uc:DodajObrisiKorisnika />-->
+            <TabItem x:Name="TabUprava" Header="Upravljanje korisnicima" Opacity="1" Visibility="Collapsed">
+                <uc:DodajObrisiKorisnika />
             </TabItem>
         </TabControl>
     </Grid>

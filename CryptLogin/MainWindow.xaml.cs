@@ -1,26 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using CryptLibrary;
-using CryptLogin.UC;
 
 namespace CryptLogin
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
 
         public MainWindow()
@@ -28,23 +14,42 @@ namespace CryptLogin
           
             InitializeComponent();
         }
+      
 
 
         private void BtnPrijava_Click(object sender, RoutedEventArgs e)
         {
-            
             var ime =  VratiIme();
             var pass = VratiPasword();
+            var upit = new UpitUJson(ime, pass);
+            var jelDobro = upit.JelDobarLogin();
+            if (jelDobro)
+            {
+                DozvoljenPristup();
+            }
+            else
+            {
+                 MessageBox.Show("Molim ponovite pokušaj logiranja!");
+            }
         }
 
+        private void DozvoljenPristup()
+        {
+
+            TabUprava.Visibility = Visibility.Visible;
+            KontrolaTabova.SelectedIndex = 1;
+            TabLogin.Visibility = Visibility.Collapsed;
+            UpdateLayout();
+
+        }
 
 
         private string VratiIme()
         {
             if (!string.IsNullOrWhiteSpace(TxtIme.Text))
             {
-                string ime = TxtIme.Text.Trim();
-                KriptirajTekst(ime);
+                var ime = TxtIme.Text.Trim();
+                ime = KriptirajTekst(ime);
                 return ime;
             }
             MessageBox.Show("Upišite korisničko ime!");
@@ -54,10 +59,14 @@ namespace CryptLogin
 
         private string VratiPasword()
         {
-            var pass = KriptirajTekst(TxtPass.Password.Trim());
-           var teks= TextBox.NameProperty.ToString();
-            return pass;
-
+            if (!string.IsNullOrWhiteSpace(TxtPass.Password))
+            {
+                var pass = TxtPass.Password.Trim();
+                pass=KriptirajTekst(pass);
+                return pass;
+            }
+            MessageBox.Show("Upišite svoj password!");
+            return string.Empty;
         }
         private static string KriptirajTekst(string tekst)
         {
@@ -65,8 +74,11 @@ namespace CryptLogin
             tekst = proces.Encrypt();
             return tekst;
         }
-        //provjeri da li ime i pasword postoje u jsonu
-        //ako postoje dozvoli korisniku pristup
-        //ako ne postoje ne puštaj ga vrati na početak
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TxtIme.Focus();
+        }
+       
     }
 }
