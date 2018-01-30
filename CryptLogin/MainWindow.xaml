@@ -29,7 +29,7 @@
                 </Border>
             </TabItem>
             <TabItem x:Name="TabUprava" Header="Upravljanje korisnicima" Opacity="1" Visibility="Collapsed">
-                <!--<uc:DodajObrisiKorisnika />-->
+                <uc:DodajObrisiKorisnika />
             </TabItem>
         </TabControl>
     </Grid>

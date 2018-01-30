@@ -24,8 +24,8 @@ namespace CryptLogin
             var ime =  VratiIme();
             var pass = VratiPasword();
             var upit = new UpitUJson(ime, pass);
-            string razina = upit.VratiRazinuKorisnika(ime);
-            UpisiRazinuULabelu(razina);
+            //string razina = upit.VratiRazinuKorisnika(ime);
+            //UpisiRazinuULabelu(razina);
             var jelDobro = upit.JelDobarLogin();
             if (jelDobro)
             {
