@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -8,6 +9,7 @@ namespace CryptLibrary
     {
         private readonly string _ime;
         private readonly string _password;
+        private readonly Korisnici _user;
 
         public UpitUJson(string ime)
         {
@@ -23,23 +25,40 @@ namespace CryptLibrary
 
         public bool VratiUpit()
         {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");
-            var rss = JObject.Parse(jsonObject);
+            var rss = VratiJObject();
             var upit = from p in rss["Korisnici"]
                 select (string) p["Ime"];
             return upit.Contains(_ime);
         }
 
-        public bool JelDobarLogin()
+        private static JObject VratiJObject()
         {
             var jsonObject = File.ReadAllText(@"Korisnici.json");
             var rss = JObject.Parse(jsonObject);
+            return rss;
+        }
+
+        public bool JelDobarLogin()
+        {
+            var rss = VratiJObject();
             var ime = from m in rss["Korisnici"]
-                select (string)m["Ime"];
+                select (string) m["Ime"];
             var password = from p in rss["Korisnici"]
                 select (string) p["Password"];
             return ime.Contains(_ime) && password.Contains(_password);
         }
 
+        public string VratiRazinuKorisnika(string ime)
+        {
+     
+            var rss = VratiJObject();
+            var jarray = (JArray) rss["Korisnici"];
+            IList<Korisnici> listaResults = jarray.Select(p => new Korisnici {Ime=(string) p["Ime"], Password=(string) p["Password"], Uloga=(string) p["Uloga"] }).ToList();
+            
+            var result = from l in listaResults
+                where l.Ime.Equals(ime)
+                select  l.Uloga.First();
+            return result.ToString();
+        }
     }
 }

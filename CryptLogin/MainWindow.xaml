@@ -11,9 +11,6 @@
         <TabControl x:Name="KontrolaTabova">
             <TabItem x:Name="TabLogin" Header="Početna">
                 <Border  VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="3" CornerRadius="3" BorderBrush="Indigo">
-                    <Border.Effect>
-                        <DropShadowEffect/>
-                    </Border.Effect>
                     <StackPanel Orientation="Vertical" Margin="20">
                     <StackPanel Orientation="Horizontal" >
                         <StackPanel Orientation="Vertical">

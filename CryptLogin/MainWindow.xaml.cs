@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using CryptLibrary;
+using CryptLogin.UC;
+using Newtonsoft.Json;
 
 namespace CryptLogin
 {
@@ -22,6 +24,8 @@ namespace CryptLogin
             var ime =  VratiIme();
             var pass = VratiPasword();
             var upit = new UpitUJson(ime, pass);
+            string razina = upit.VratiRazinuKorisnika(ime);
+            UpisiRazinuULabelu(razina);
             var jelDobro = upit.JelDobarLogin();
             if (jelDobro)
             {
@@ -31,6 +35,12 @@ namespace CryptLogin
             {
                  MessageBox.Show("Molim ponovite pokušaj logiranja!");
             }
+        }
+
+        private static void UpisiRazinuULabelu(string razina)
+        {
+            var enc = new EncDecrypt(razina);
+            var dod = new DodajObrisiKorisnika {LblUser = {Content = enc.Decrypt()}};
         }
 
         private void DozvoljenPristup()
