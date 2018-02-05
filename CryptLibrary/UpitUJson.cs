@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -47,8 +48,8 @@ namespace CryptLibrary
             return ime.Contains(_ime) && password.Contains(_password);
         }
 
-        //public string VratiRazinuKorisnika(string ime)
-        //{
+        public static string VratiRazinuKorisnika(string ime)
+        {
      
         //    var rss = VratiJObject();
         //    var jarray = (JArray) rss["Korisnici"];
@@ -57,7 +58,7 @@ namespace CryptLibrary
         //    var result = from l in listaResults
         //        where l.Ime.Equals(ime)
         //        select  l.Uloga.First();
-        //    return result.ToString();
-        //}
+            return string.Empty;
+        }
     }
 }

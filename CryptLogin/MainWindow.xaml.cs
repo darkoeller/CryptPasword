@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using CryptLibrary;
 using CryptLogin.UC;
 using Newtonsoft.Json;
@@ -24,17 +25,25 @@ namespace CryptLogin
             var ime =  VratiIme();
             var pass = VratiPasword();
             var upit = new UpitUJson(ime, pass);
-            //string razina = upit.VratiRazinuKorisnika(ime);
-            //UpisiRazinuULabelu(razina);
             var jelDobro = upit.JelDobarLogin();
             if (jelDobro)
             {
                 DozvoljenPristup();
+                var razina = UpitUJson.VratiRazinuKorisnika(ime);
+                UpisiRazinuULabelu(razina);
+
             }
             else
             {
                  MessageBox.Show("Molim ponovite pokušaj logiranja!");
+                ObrisiKontrole();
             }
+        }
+
+        private void ObrisiKontrole()
+        {
+            TxtIme.Text = string.Empty;
+            TxtPass.Password = string.Empty;
         }
 
         private static void UpisiRazinuULabelu(string razina)
