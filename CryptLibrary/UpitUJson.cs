@@ -47,18 +47,5 @@ namespace CryptLibrary
                 select (string) p["Password"];
             return ime.Contains(_ime) && password.Contains(_password);
         }
-
-        public static string VratiRazinuKorisnika(string ime)
-        {
-     
-        //    var rss = VratiJObject();
-        //    var jarray = (JArray) rss["Korisnici"];
-        //    IList<Korisnici> listaResults = jarray.Select(p => new Korisnici {Ime=(string) p["Ime"], Password=(string) p["Password"], Uloga=(string) p["Uloga"] }).ToList();
-            
-        //    var result = from l in listaResults
-        //        where l.Ime.Equals(ime)
-        //        select  l.Uloga.First();
-            return string.Empty;
-        }
     }
 }

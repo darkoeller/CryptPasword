@@ -29,9 +29,6 @@ namespace CryptLogin
             if (jelDobro)
             {
                 DozvoljenPristup();
-                var razina = UpitUJson.VratiRazinuKorisnika(ime);
-                UpisiRazinuULabelu(razina);
-
             }
             else
             {
@@ -73,7 +70,6 @@ namespace CryptLogin
             }
             MessageBox.Show("Upišite korisničko ime!");
             return string.Empty;
-            
         }
 
         private string VratiPasword()
