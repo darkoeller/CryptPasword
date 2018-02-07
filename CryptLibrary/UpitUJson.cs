@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace CryptLibrary
@@ -45,7 +47,24 @@ namespace CryptLibrary
                 select (string) m["Ime"];
             var password = from p in rss["Korisnici"]
                 select (string) p["Password"];
+            ProcitajJson();
             return ime.Contains(_ime) && password.Contains(_password);
+        }
+
+        public void ProcitajJson()
+        {
+            var ime = _ime;
+            var rss = VratiJObject();
+            var cor = (JArray)rss["Korisnici"];
+            IList<Korisnici> listaResults = cor.Select(p => new Korisnici {
+                Ime=(string) p["Ime"], 
+                Password=(string) p["Password"], 
+                Uloga=(string) p["Uloga"]}).ToList();
+
+            var ul = from l in listaResults
+                where ime.Contains(l.Ime)
+                select  l.Uloga.ToString();
+          
         }
     }
 }
