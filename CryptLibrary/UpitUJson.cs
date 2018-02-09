@@ -61,8 +61,8 @@ namespace CryptLibrary
             List<Korisnici> cor = new List<Korisnici>();
             foreach (JToken token in results)
             {
-                //token = token.ToObject<Korisnici>();
-                //cor.Add(token);
+                var korisnik = token.ToObject<Korisnici>();
+                cor.Add(korisnik);
             }
         }
     }
