@@ -21,7 +21,7 @@ namespace CryptLogin.UC
         {
             PopuniMrezu();
             TxtIme.Focus();
-            CmbUloga.ItemsSource = Enum.GetNames(typeof(Uloga));
+            CmbUloga.ItemsSource = Enum.GetNames(typeof(Uloge));
             CmbUloga.SelectedIndex = 0;
         }
         private string VratiPassword => TxtPassword.Text.Trim();

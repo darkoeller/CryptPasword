@@ -35,9 +35,11 @@ namespace CryptLibrary
 
         private static JObject VratiJObject()
         {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");
-            var rss = JObject.Parse(jsonObject);
-            return rss;
+            using (var reader = File.OpenText(@"Korisnici.json"))
+            {
+                    var jsonObject = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                    return jsonObject;
+            }
         }
 
         public bool JelDobarLogin()
@@ -55,16 +57,13 @@ namespace CryptLibrary
         {
             var ime = _ime;
             var rss = VratiJObject();
-            var cor = (JArray)rss["Korisnici"];
-            IList<Korisnici> listaResults = cor.Select(p => new Korisnici {
-                Ime=(string) p["Ime"], 
-                Password=(string) p["Password"], 
-                Uloga=(string) p["Uloga"]}).ToList();
-
-            var ul = from l in listaResults
-                where ime.Contains(l.Ime)
-                select  l.Uloga.ToString();
-          
+            IList<JToken> results = rss["Korisnici"].Children().ToList();
+            List<Korisnici> cor = new List<Korisnici>();
+            foreach (JToken token in results)
+            {
+                //token = token.ToObject<Korisnici>();
+                //cor.Add(token);
+            }
         }
     }
 }
