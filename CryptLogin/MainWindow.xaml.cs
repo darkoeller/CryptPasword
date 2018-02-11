@@ -29,6 +29,7 @@ namespace CryptLogin
             if (jelDobro)
             {
                 DozvoljenPristup();
+                var cor = new VratiKorisnika(TxtIme.Text);
             }
             else
             {

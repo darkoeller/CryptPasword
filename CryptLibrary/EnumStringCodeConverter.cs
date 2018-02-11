@@ -14,7 +14,6 @@ namespace CryptLibrary
                 case Uloge.Admin:
                     writer.WriteValue("Admin");
                     break;
-
                 case Uloge.SuperKorisnik:
                     writer.WriteValue("SuperKorisnik");
                     break;

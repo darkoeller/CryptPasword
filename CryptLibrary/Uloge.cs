@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 namespace CryptLibrary
 {
 
-    [JsonConverter(typeof(EnumStringCodeConverter))]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum Uloge
     {
         [EnumMember(Value = "Admin")]

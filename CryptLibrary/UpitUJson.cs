@@ -49,21 +49,7 @@ namespace CryptLibrary
                 select (string) m["Ime"];
             var password = from p in rss["Korisnici"]
                 select (string) p["Password"];
-            ProcitajJson();
             return ime.Contains(_ime) && password.Contains(_password);
-        }
-
-        public void ProcitajJson()
-        {
-            var ime = _ime;
-            var rss = VratiJObject();
-            IList<JToken> results = rss["Korisnici"].Children().ToList();
-            List<Korisnici> cor = new List<Korisnici>();
-            foreach (JToken token in results)
-            {
-                var korisnik = token.ToObject<Korisnici>();
-                cor.Add(korisnik);
-            }
         }
     }
 }

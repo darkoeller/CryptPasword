@@ -90,7 +90,7 @@ namespace CryptLogin.UC
            var jsonObject = File.ReadAllText(@"Korisnici.json");
            var rss = JObject.Parse(jsonObject);
            var jarray = (JArray) rss["Korisnici"];
-           IList<Korisnici> listaResults = jarray.Select(p => new Korisnici {Ime=(string) p["Ime"], Password=(string) p["Password"], Uloga=(string) p["Uloga"] }).ToList();
+           IList<Korisnici> listaResults = jarray.Select(p => new Korisnici {Ime=(string) p["Ime"], Password=(string) p["Password"], Uloga=(string) p["Uloga"]}).ToList();
            return listaResults;
         }
 

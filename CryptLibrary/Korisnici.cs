@@ -17,7 +17,7 @@ namespace CryptLibrary
         public string Password { get; set; }
 
         [JsonProperty("Uloga")]
-        [JsonConverter(typeof(EnumStringCodeConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public JToken Uloga { get; set; }
 
        
