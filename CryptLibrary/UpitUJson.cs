@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 
 namespace CryptLibrary
 {
@@ -49,7 +50,26 @@ namespace CryptLibrary
                 select (string) m["Ime"];
             var password = from p in rss["Korisnici"]
                 select (string) p["Password"];
+            VratiUlogu();
             return ime.Contains(_ime) && password.Contains(_password);
+        }
+
+        public string VratiUlogu()
+        {
+            var rss = VratiJObject();
+            var uloga = from u in rss["Korisnici"]
+                where _ime.Equals((string) u["Ime"])
+                      select (string) u ["Uloga"];
+            var act = uloga.ToArray()[0];
+            var gamer = PronadjiUlogu(act);
+            return gamer;
+        }
+
+        private string PronadjiUlogu(string act)
+        {
+           var decrypt = new EncDecrypt(act);
+           var enc = decrypt.Decrypt();
+            return enc;
         }
     }
 }

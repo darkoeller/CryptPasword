@@ -29,7 +29,7 @@ namespace CryptLogin
             if (jelDobro)
             {
                 DozvoljenPristup();
-                var cor = new VratiKorisnika(TxtIme.Text);
+                var cor = upit.VratiUlogu();
             }
             else
             {
