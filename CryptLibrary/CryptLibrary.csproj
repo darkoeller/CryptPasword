@@ -46,7 +46,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Uloge.cs" />
     <Compile Include="UpitUJson.cs" />
-    <Compile Include="VratiKorisnika.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

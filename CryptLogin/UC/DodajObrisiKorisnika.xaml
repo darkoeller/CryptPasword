@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:CryptLogin"
     x:Class="CryptLogin.UC.DodajObrisiKorisnika"
     mc:Ignorable="d"
     d:DesignHeight="425" d:DesignWidth="450" Loaded="UserControl_Loaded">
@@ -11,7 +10,6 @@
         <StackPanel  Margin="0" Orientation="Vertical" VerticalAlignment="Top">
             <Border  Margin="5" BorderThickness="2" CornerRadius="5" BorderBrush="DarkSeaGreen" Width="440">
                 <DockPanel LastChildFill="False"  Margin="0">
-                    <Label x:Name="LblUser" HorizontalAlignment="Right" DockPanel.Dock="Top" Content="Hej " />
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="16" Margin="0,20"
                         FontFamily="Comic Sans MS" Text="DODAJ ILI OBRIŠI KORISNIKA" />
                     <DataGrid DockPanel.Dock="Top" Width="405" Height="150" x:Name="KorisiniciDataGrid"

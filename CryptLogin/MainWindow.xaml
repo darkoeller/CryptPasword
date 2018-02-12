@@ -7,30 +7,33 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="525"
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
-    <Grid>
-        <TabControl x:Name="KontrolaTabova">
-            <TabItem x:Name="TabLogin" Header="Početna">
-                <Border  VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="3" CornerRadius="3" BorderBrush="Indigo">
-                    <StackPanel Orientation="Vertical" Margin="20">
-                    <StackPanel Orientation="Horizontal" >
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock HorizontalAlignment="Right" Text="Korisničko ime:" Margin="0"/>
-                            <TextBlock HorizontalAlignment="Right" Text="Password: " Margin="0,20,0,2" />
+    <StackPanel Orientation="Vertical" d:LayoutOverrides="Height">
+        <Label x:Name="LblUloga" HorizontalAlignment="Right" Height="25" Width="150" Margin="0,0,10,0"/>
+        <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="500" Height="490">
+            <TabControl x:Name="KontrolaTabova" DockPanel.Dock="Top" >
+                <TabItem x:Name="TabLogin" Header="Početna">
+                    <Border  VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="3" CornerRadius="3" BorderBrush="Indigo">
+                        <StackPanel Orientation="Vertical" Margin="20">
+                            <StackPanel Orientation="Horizontal" >
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock HorizontalAlignment="Right" Text="Korisničko ime:" Margin="0"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Password: " Margin="0,20,0,2" />
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBox x:Name="TxtIme" Width="150" Margin="5,0,0,5"/>
+                                    <PasswordBox x:Name="TxtPass" Width="150" Margin="5,10,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Margin="0,15,0,0">
+                                <Button x:Name="BtnPrijava" MinHeight="32" Content="Prijavite se u aplikaciju" Click="BtnPrijava_Click" IsDefault="True"/>
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBox x:Name="TxtIme" Width="150" Margin="5,0,0,5"/>
-                            <PasswordBox x:Name="TxtPass" Width="150" Margin="5,10,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Margin="0,15,0,0">
-                        <Button x:Name="BtnPrijava" MinHeight="32" Content="Prijavite se u aplikaciju" Click="BtnPrijava_Click" IsDefault="True"></Button>
-                    </StackPanel>
-                </StackPanel>
-                </Border>
-            </TabItem>
-            <TabItem x:Name="TabUprava" Header="Upravljanje korisnicima" Opacity="1" Visibility="Collapsed">
-                <uc:DodajObrisiKorisnika />
-            </TabItem>
-        </TabControl>
-    </Grid>
+                    </Border>
+                </TabItem>
+                <TabItem x:Name="TabUprava" Header="Upravljanje korisnicima" Opacity="1" Visibility="Collapsed">
+                    <uc:DodajObrisiKorisnika />
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </StackPanel>
 </Window>

@@ -30,6 +30,7 @@ namespace CryptLogin
             {
                 DozvoljenPristup();
                 var cor = upit.VratiUlogu();
+                UpisiRazinuULabelu(cor);
             }
             else
             {
@@ -44,10 +45,9 @@ namespace CryptLogin
             TxtPass.Password = string.Empty;
         }
 
-        private static void UpisiRazinuULabelu(string razina)
+        private void UpisiRazinuULabelu(string razina)
         {
-            var enc = new EncDecrypt(razina);
-            var dod = new DodajObrisiKorisnika {LblUser = {Content = enc.Decrypt()}};
+            LblUloga.Content = "Hej " + razina;
         }
 
         private void DozvoljenPristup()
