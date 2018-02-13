@@ -70,8 +70,7 @@ namespace CryptLogin.UC
 
         private static void VratiObjekte(out IEnumerable<string> imena, out IEnumerable<string> passwordi, out IEnumerable<string> uloge)
         {
-            var jsonObject = File.ReadAllText(@"Korisnici.json");
-            var rss = JObject.Parse(jsonObject);
+            var rss = VratiJObject();
             imena = from p in rss["Korisnici"]
                 select (string) p["Ime"];
             passwordi = from p in rss["Korisnici"]
@@ -105,11 +104,17 @@ namespace CryptLogin.UC
 
         private static IList<Korisnici> IzvuciListuKorisnika()
         {
-           var jsonObject = File.ReadAllText(@"Korisnici.json");
-           var rss = JObject.Parse(jsonObject);
-           var jarray = (JArray) rss["Korisnici"];
+           var rss = VratiJObject();
+            var jarray = (JArray) rss["Korisnici"];
            IList<Korisnici> listaResults = jarray.Select(p => new Korisnici {Ime=(string) p["Ime"], Password=(string) p["Password"], Uloga=(string) p["Uloga"]}).ToList();
            return listaResults;
+        }
+
+        private static JObject VratiJObject()
+        {
+            var jsonObject = File.ReadAllText(@"Korisnici.json");
+            var rss = JObject.Parse(jsonObject);
+            return rss;
         }
 
         private void BtnDodaj_Click(object sender, RoutedEventArgs e)

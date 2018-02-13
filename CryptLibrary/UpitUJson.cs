@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
 
 namespace CryptLibrary
 {
@@ -14,24 +10,10 @@ namespace CryptLibrary
         private readonly string _ime;
         private readonly string _password;
 
-        public UpitUJson(string ime)
-        {
-            _ime = ime;
-        }
-
         public UpitUJson(string ime, string password)
         {
             _ime = ime;
             _password = password;
-
-        }
-
-        public bool VratiUpit()
-        {
-            var rss = VratiJObject();
-            var upit = from p in rss["Korisnici"]
-                select (string) p["Ime"];
-            return upit.Contains(_ime);
         }
 
         private static JObject VratiJObject()
@@ -65,7 +47,7 @@ namespace CryptLibrary
             return gamer;
         }
 
-        private string PronadjiUlogu(string act)
+        private static string PronadjiUlogu(string act)
         {
            var decrypt = new EncDecrypt(act);
            var enc = decrypt.Decrypt();
