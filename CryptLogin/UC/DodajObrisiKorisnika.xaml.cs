@@ -32,27 +32,40 @@ namespace CryptLogin.UC
         private void PopuniMrezu()
         {
              VratiObjekte(out var imena, out var passwordi, out var uloge);
+            var imenaArray = DekriptirajImenaArray(imena, passwordi, uloge, out var paswordArray, out var ulogeArray);
+            var listaKorisnika = VratObrisanuiListuKorisnika(imenaArray, paswordArray, ulogeArray);
+            KorisiniciDataGrid.ItemsSource = listaKorisnika;
+        }
+
+        private static IEnumerable<string> DekriptirajImenaArray(IEnumerable<string> imena, IEnumerable<string> passwordi, IEnumerable<string> uloge,
+            out List<string> paswordArray, out List<string> ulogeArray)
+        {
             var imenaArray = imena.Select(ime => new EncDecrypt(ime))
                 .Select(desifrator => desifrator.Decrypt())
                 .ToList();
-            var paswordArray = passwordi.Select(password => new EncDecrypt(password))
+            paswordArray = passwordi.Select(password => new EncDecrypt(password))
                 .Select(sifra => sifra.Decrypt())
                 .ToList();
-            var ulogeArray = uloge.Select(ad => new EncDecrypt(ad.ToString())).Select(ad =>ad.Decrypt()).ToList();
+            ulogeArray = uloge.Select(ad => new EncDecrypt(ad.ToString())).Select(ad => ad.Decrypt()).ToList();
+            return imenaArray;
+        }
+
+        private static IEnumerable<Korisnici> VratObrisanuiListuKorisnika(IEnumerable<string> imenaArray, ICollection<string> paswordArray, ICollection<string> ulogeArray)
+        {
             var listaKorisnika = new List<Korisnici>();
             foreach (var ime in imenaArray)
-                foreach (var pass in paswordArray)
+            foreach (var pass in paswordArray)
+            {
+                foreach (var ul in ulogeArray)
                 {
-                    foreach (var ul in ulogeArray)
-                    {
-                        listaKorisnika.Add(new Korisnici { Ime = ime, Password = pass,  Uloga = ul });
-                        paswordArray.Remove(pass);
-                        ulogeArray.Remove(ul);
-                        break;
-                    }
+                    listaKorisnika.Add(new Korisnici {Ime = ime, Password = pass, Uloga = ul});
+                    paswordArray.Remove(pass);
+                    ulogeArray.Remove(ul);
                     break;
                 }
-            KorisiniciDataGrid.ItemsSource = listaKorisnika;
+                break;
+            }
+            return listaKorisnika;
         }
 
         private static void VratiObjekte(out IEnumerable<string> imena, out IEnumerable<string> passwordi, out IEnumerable<string> uloge)
@@ -69,20 +82,25 @@ namespace CryptLogin.UC
 
         private void BtnObrisi_Click(object sender, RoutedEventArgs e)
         {
-            if (KorisiniciDataGrid.SelectedIndex == -1)
+            if (KorisiniciDataGrid.SelectedIndex == -1 && KorisiniciDataGrid.Items.Count == 0)
             {
-                MessageBox.Show("Niste nikog odabrali za brisanje!");
+                MessageBox.Show("Niste nikog odabrali za brisanje\n ili je mreža prazna!");
                 return;
             }
-            _korisnik = (Korisnici)KorisiniciDataGrid.SelectedItem ;
+            BrisiIzMreze();
+            PopuniMrezu();
+            KorisiniciDataGrid.Items.Refresh();
+            KorisiniciDataGrid.SelectedIndex = -1;
+        }
+
+        private void BrisiIzMreze()
+        {
+            _korisnik = (Korisnici) KorisiniciDataGrid.SelectedItem;
             var ime = KriptirajTekst(_korisnik.Ime);
             var osobe = IzvuciListuKorisnika();
             var zabrisati = osobe.FirstOrDefault(x => x.Ime == ime);
             osobe.Remove(zabrisati);
             CitajPisiJson.ObrisiKorisnika(osobe);
-            PopuniMrezu();
-            KorisiniciDataGrid.Items.Refresh();
-            KorisiniciDataGrid.SelectedIndex = -1;
         }
 
         private static IList<Korisnici> IzvuciListuKorisnika()
