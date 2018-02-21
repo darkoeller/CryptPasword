@@ -33,7 +33,7 @@ namespace CryptLibrary
             var password = from p in rss["Korisnici"]
                 select (string) p["Password"];
             VratiUlogu();
-            return ime.Contains(_ime) && password.Contains(_password);
+            return ime.AsParallel().Contains(_ime) && password.Contains(_password);
         }
 
         public string VratiUlogu()

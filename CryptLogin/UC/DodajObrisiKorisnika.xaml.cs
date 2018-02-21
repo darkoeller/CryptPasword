@@ -40,13 +40,13 @@ namespace CryptLogin.UC
         private static IEnumerable<string> DekriptirajImenaArray(IEnumerable<string> imena, IEnumerable<string> passwordi, IEnumerable<string> uloge,
             out List<string> paswordArray, out List<string> ulogeArray)
         {
-            var imenaArray = imena.Select(ime => new EncDecrypt(ime))
+            var imenaArray = imena.AsParallel().Select(ime => new EncDecrypt(ime))
                 .Select(desifrator => desifrator.Decrypt())
                 .ToList();
-            paswordArray = passwordi.Select(password => new EncDecrypt(password))
+            paswordArray = passwordi.AsParallel().Select(password => new EncDecrypt(password))
                 .Select(sifra => sifra.Decrypt())
                 .ToList();
-            ulogeArray = uloge.Select(ad => new EncDecrypt(ad.ToString())).Select(ad => ad.Decrypt()).ToList();
+            ulogeArray = uloge.AsParallel().Select(ad => new EncDecrypt(ad.ToString())).Select(ad => ad.Decrypt()).ToList();
             return imenaArray;
         }
 

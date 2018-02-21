@@ -1,8 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using CryptLibrary;
-using CryptLogin.UC;
-using Newtonsoft.Json;
 
 namespace CryptLogin
 {
