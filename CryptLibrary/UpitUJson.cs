@@ -39,12 +39,10 @@ namespace CryptLibrary
         public string VratiUlogu()
         {
             var rss = VratiJObject();
-            var uloga = from u in rss["Korisnici"]
+            var uloga = (from u in rss["Korisnici"]
                 where _ime.Equals((string) u["Ime"])
-                      select (string) u ["Uloga"];
-            var act = uloga.ToArray()[0];
-            var gamer = PronadjiUlogu(act);
-            return gamer;
+                      select (string) u ["Uloga"]).First();
+            return PronadjiUlogu(uloga);
         }
 
         private static string PronadjiUlogu(string act)
