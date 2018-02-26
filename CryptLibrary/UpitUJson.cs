@@ -28,12 +28,12 @@ namespace CryptLibrary
         public bool JelDobarLogin()
         {
             var rss = VratiJObject();
-            var ime = from m in rss["Korisnici"]
-                select (string) m["Ime"];
-            var password = from p in rss["Korisnici"]
-                select (string) p["Password"];
+            var ime = (from m in rss["Korisnici"]
+                select (string)m["Ime"]).First();
+            var password = (from p in rss["Korisnici"]
+                select (string) p["Password"]).First();
             VratiUlogu();
-            return ime.AsParallel().Contains(_ime) && password.Contains(_password);
+            return ime==_ime && password ==_password;
         }
 
         public string VratiUlogu()
